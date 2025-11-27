@@ -1,6 +1,6 @@
 from django.db import models
 from uuid import uuid4
-from User.models import User
+from User.infra.models import User
 
 # Create your models here.
 class Labels(models.Model):
