@@ -1,8 +1,9 @@
-from Domain.entities import UserEntity
-from models import User, Permission
+from ..Domain.entities import UserEntity
+from .models import User, Permission
 
 class UserRepository:
     def save(self, userDomain: UserEntity):
+        # Transformo a entidade de dominio em uma model e insiro no banco
         permission = Permission.objects.create(
             per_app_task_notification = userDomain.permissions.task_notification,
             per_app_calendar_home =  userDomain.permissions.calendar_home,

@@ -1,4 +1,4 @@
-
+from dataclasses import dataclass
 class Permission:
     id: str
     task_notification: bool
@@ -6,6 +6,7 @@ class Permission:
     task_email_notification: bool
     open_apps: bool
 
+@dataclass # Isso é um decorador que diminui minhas linhas de código implementando métodos etc que eu precisaria implementar na mao, ex: __init__
 class UserEntity:
     id: str
     name: str
