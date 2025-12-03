@@ -1,28 +1,28 @@
 from ..Domain.entities import UserEntity
-from .models import User, Permission
+from .models import User
 
 class UserRepository:
     def save(self, userDomain: UserEntity):
-        # Transformo a entidade de dominio em uma model e insiro no banco
-        permission = Permission.objects.create(
-            per_app_task_notification = userDomain.permissions.task_notification,
-            per_app_calendar_home =  userDomain.permissions.calendar_home,
-            per_app_task_email_notification =  userDomain.permissions.task_email_notification,
-            per_app_open_apps =  userDomain.permissions.open_apps,
-        )
-
         user_created = User.objects.create(
+            use_id = userDomain.id,
             use_name = userDomain.name,
-            use_status = userDomain.status,
+            use_status = userDomain.status.value,
             use_email = userDomain.email,
             use_password_hash =userDomain.password_hash,
             use_phone = userDomain.phone,
             use_login_type = userDomain.login_type,
-            use_ip_address = userDomain.ip_address,
-            created_at = userDomain.status,
-            updated_at = userDomain.status,
+            use_ip_address = userDomain.ip_address
         )
 
-        user_created.permissions.add(permission)
-
-        return user_created
+        return UserEntity(
+            id=user_created.use_id,
+            name=user_created.use_name,
+            status=user_created.use_status,
+            email=user_created.use_email,
+            phone=user_created.use_phone,
+            login_type=user_created.use_login_type,
+            ip_address=user_created.use_ip_address,
+            password_hash=user_created.use_password_hash,
+            created_at=user_created.created_at,
+            updated_at=user_created.updated_at
+        )
