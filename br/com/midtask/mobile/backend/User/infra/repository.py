@@ -1,19 +1,19 @@
 from ..Domain.entities import UserEntity
-from .models import User
+from User.models import User
+
 
 class UserRepository:
-    def save(self, userDomain: UserEntity):
-        user_created = User.objects.create(
-            use_id = userDomain.id,
-            use_name = userDomain.name,
-            use_status = userDomain.status.value,
-            use_email = userDomain.email,
-            use_password_hash =userDomain.password_hash,
-            use_phone = userDomain.phone,
-            use_login_type = userDomain.login_type,
-            use_ip_address = userDomain.ip_address
+    def save(self, user: UserEntity) -> UserEntity:
+        user_created = User.objects.create_user(
+            email=user.email,
+            password=user.password,
+            use_id=user.id,
+            use_name=user.name,
+            use_status=user.status.value,
+            use_phone=user.phone,
+            use_login_type=user.login_type,
+            use_ip_address=user.ip_address,
         )
-
         return UserEntity(
             id=user_created.use_id,
             name=user_created.use_name,
@@ -22,7 +22,24 @@ class UserRepository:
             phone=user_created.use_phone,
             login_type=user_created.use_login_type,
             ip_address=user_created.use_ip_address,
-            password_hash=user_created.use_password_hash,
             created_at=user_created.created_at,
-            updated_at=user_created.updated_at
+            updated_at=user_created.updated_at,
         )
+    
+    def find_all(self, user: UserEntity = None):
+        users_founded = User.objects.all()
+        users_domain = []
+        for user in users_founded:
+            users_domain.append(UserEntity(
+                id=user.use_id,
+                name=user.use_name,
+                status=user.use_status,
+                email=user.use_email,
+                phone=user.use_phone,
+                login_type=user.use_login_type,
+                ip_address=user.use_ip_address,
+                created_at=user.created_at,
+                updated_at=user.updated_at,
+            ))
+            
+        return users_domain

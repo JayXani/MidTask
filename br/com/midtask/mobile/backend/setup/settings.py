@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 from dotenv import load_dotenv
 import os
+from datetime import timedelta
 
 load_dotenv()
 from dj_database_url import parse as db_url
@@ -97,7 +98,7 @@ DATABASES = {"default": db_url(os.getenv("DATABASE_URL"))}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
-
+AUTH_USER_MODEL ="User.User"
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
@@ -112,8 +113,12 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
-
-
+SIMPLE_JWT = {
+    "USER_ID_FIELD": "use_id",  # Toda vez que alteramos o campo default id do user, temos que adicionar o novo aqui, para o JWT saber qual é o novo campo id
+    "USER_ID_CLAIM": "user_id",
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+}
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 

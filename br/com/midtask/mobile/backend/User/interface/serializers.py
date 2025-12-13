@@ -1,4 +1,7 @@
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.exceptions import AuthenticationFailed
+from ..infra.messages import format_response
 from enum import Enum
 
 class Status(Enum):
@@ -15,7 +18,7 @@ class UserInputSerializer(serializers.Serializer):
     email = serializers.EmailField(
         required=True
     )
-    password_hash = serializers.CharField(required=False)
+    password = serializers.CharField(required=False)
     phone = serializers.CharField()
     login_type = serializers.CharField()
     ip_address = serializers.IPAddressField()
@@ -25,13 +28,13 @@ class UserInputSerializer(serializers.Serializer):
     )
     created_at = serializers.DateField(required=False)
     updated_at = serializers.DateField(required=False)
-
+    
     def validate(self, data):
         dict_data = dict(data)
         login_type = dict_data.get("login_type")
-        if(login_type != "google" and not dict_data.get("password_hash")):
+        if(login_type != "google" and not dict_data.get("password")):
             raise serializers.ValidationError({
-                "password_hash": ["Password is required !"]
+                "password": ["Password is required !"]
             })
         
         return data
@@ -40,4 +43,15 @@ class UserInputSerializer(serializers.Serializer):
         validated = super().to_internal_value(data)
         validated["status"] = Status[validated["status"]]  # transforma string → enum
         return validated
+    
+class UserOutputSerializer(serializers.Serializer):
+    id = serializers.UUIDField()
+    name = serializers.CharField()
+    status = serializers.CharField()
+    email = serializers.EmailField()
+    phone = serializers.CharField(allow_null=True)
+    login_type = serializers.CharField()
+    ip_address = serializers.IPAddressField()
+    created_at = serializers.DateTimeField()
+    updated_at = serializers.DateTimeField()
     
