@@ -6,11 +6,19 @@ from django.conf import settings
 class Labels(models.Model):
     lab_id=models.UUIDField(primary_key=True, editable=False, default=uuid4)
     lab_name=models.CharField(max_length=20, unique=True)
+    fk_lab_use_id = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
 
 class Alerts(models.Model):
     ale_id=models.UUIDField(primary_key=True, editable=False, default=uuid4)
     ale_date=models.DateTimeField()
     ale_repeat=models.CharField(max_length=10)
+    fk_ale_use_id = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
 
 class LinksAssociates(models.Model):
     asc_id=models.UUIDField(primary_key=True, editable=False, default=uuid4)
@@ -18,6 +26,10 @@ class LinksAssociates(models.Model):
     asc_link_reference=models.TextField(unique=True)
     asc_type=models.CharField(max_length=10)
     asc_icon=models.TextField(null=True)
+    fk_asc_use_id = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
 
 class Task(models.Model):
     tsk_id=models.UUIDField(primary_key=True, editable=False, default=uuid4)
@@ -32,7 +44,7 @@ class Task(models.Model):
     fk_tsk_use_id = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
-    )    
+    )
     fk_tsk_ale_id=models.ForeignKey(Alerts, on_delete=models.CASCADE)
     labels=models.ManyToManyField(Labels)
     associateLinks=models.ManyToManyField(LinksAssociates)

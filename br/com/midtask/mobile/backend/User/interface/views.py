@@ -1,6 +1,6 @@
 from ..application.use_cases.create_user_use_case import CreateUserUseCase
+from ..application.use_cases.update_user_use_case import UpdateUserUseCase
 from ..infra.messages import format_response
-from ..infra.repository import UserRepository
 from rest_framework_simplejwt.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -8,15 +8,15 @@ from rest_framework.serializers import ValidationError
 from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework.views import APIView
-from rest_framework import status
 from .serializers import (
     UserInputSerializer,
+    UserUpdateSerializer,
     UserOutputSerializer
 )
 
 class UserViewer(APIView):
     def get_permissions(self):
-        if(self.request.method == "POST"):
+        if(self.request.method == "POST"): # Rota pública somente para cadastro do usuário
             return [AllowAny()]
         return [IsAuthenticated()]
     
@@ -24,9 +24,7 @@ class UserViewer(APIView):
         try:
             serializer = UserInputSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
-
-            repository = UserRepository()
-            use_case = CreateUserUseCase(repository)
+            use_case = CreateUserUseCase()
     
             # validated_data vem convertido e tipado
             user_created = use_case.execute(serializer.validated_data)
@@ -44,27 +42,32 @@ class UserViewer(APIView):
         
         except Exception as e: 
             return Response(format_response(False, err=e))
-
-    def get(self, request: Request):
+    
+    def patch(self, request: Request, id: str):
         try: 
-            repository = UserRepository()
-            users = repository.find_all()
-            serializer = UserOutputSerializer(users, many=True)
+            serializer = UserUpdateSerializer(data=request.data, partial=True) #partial=True, indica que somente os dados com valores serao atualizados/serializados
+            serializer.is_valid(raise_exception=True)
             
+            use_case = UpdateUserUseCase()
+            user_updated = use_case.execute(serializer.data, id)
+            serializer_output = UserOutputSerializer(user_updated)
+
             return Response(format_response(
                 success=True,
-                message="Usuários retornados.",
-                data=serializer.data
+                message="Success ! User updated.",
+                data=serializer_output.data
             ))
-        except Exception as e:
-
-            return Response(
-                format_response(
-                    success=False,
-                    err=e
-                )
-            )
         
+        except Exception as e:
+            return Response(format_response(
+                success=False,
+                message="Exception in update",
+                err=e
+            ))
+    
+    
+    
+
 
 # Otimizando o método de autenticacao e padronizando o retorno dos erros
 class Authentication(TokenObtainPairView):
@@ -89,7 +92,7 @@ class Authentication(TokenObtainPairView):
                     message="Authentication failed!",
                     err=e
                 ),
-                status=status.HTTP_401_UNAUTHORIZED
+                status=401
             )
         except Exception as e:
             return Response(

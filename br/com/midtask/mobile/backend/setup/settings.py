@@ -116,8 +116,8 @@ AUTH_PASSWORD_VALIDATORS = [
 SIMPLE_JWT = {
     "USER_ID_FIELD": "use_id",  # Toda vez que alteramos o campo default id do user, temos que adicionar o novo aqui, para o JWT saber qual é o novo campo id
     "USER_ID_CLAIM": "user_id",
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5), # Tempo de vida para o token principal
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1), # Tempo de vida para você usar o token antigo e gerar um novo
 }
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/

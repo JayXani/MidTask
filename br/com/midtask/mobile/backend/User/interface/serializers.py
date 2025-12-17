@@ -44,6 +44,35 @@ class UserInputSerializer(serializers.Serializer):
         validated["status"] = Status[validated["status"]]  # transforma string → enum
         return validated
     
+
+# Recomendado ter serializers diferente para cada tipo de método, para nao gerar bugs
+class UserUpdateSerializer(serializers.Serializer):
+    name = serializers.CharField(required=False)
+    status = serializers.ChoiceField(
+        choices=[s.name for s in Status],
+        required=False
+    )
+    phone = serializers.CharField(required=False)
+    password = serializers.CharField(required=False)
+    permissions = serializers.ListField(
+        child=serializers.CharField(),
+        required=False
+    )
+
+    def validate(self, data):
+        if "password" in data and len(data["password"]) < 8:
+            raise serializers.ValidationError({
+                "password": ["Password must be at least 8 characters"]
+            })
+        return data
+
+    def to_internal_value(self, data):
+        validated = super().to_internal_value(data)
+        if "status" in validated:
+            validated["status"] = Status[validated["status"]]
+        return validated
+
+
 class UserOutputSerializer(serializers.Serializer):
     id = serializers.UUIDField()
     name = serializers.CharField()

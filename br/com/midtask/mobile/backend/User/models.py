@@ -10,18 +10,6 @@ class Status(models.TextChoices):
     BLOCKED = "B", "BLOCKED"
     DEACTIVATE = "D", "DEACTIVATE"
 
-#Nao posso usasr o uuid4() ele troca o tipo pelo valor, CUIDADO COM O nome, Permission é classe default do auth.models, use PERMISSIONS
-class MobilePermissions(models.Model):
-    per_app_id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
-    per_app_task_notification = models.BooleanField(default=False)
-    per_app_calendar_home = models.BooleanField(default=False)
-    per_app_task_email_notification = models.BooleanField(default=False)
-    per_app_open_apps = models.BooleanField(default=False)
-    users = models.ManyToManyField(
-        settings.AUTH_USER_MODEL,
-        related_name="mobile_permissions"
-    )
-# Aqui é a classe mae que vai realizar as validacoes e criar corretamente o meu user, com as permissoes correta
 class UserManager(BaseUserManager): 
     def create_user(self, email: str, password: str, **extra_fields): # Método para criar o user padrao
         email = self.normalize_email(email)

@@ -4,8 +4,8 @@ from ...Domain.entities import UserEntity
 
 
 class CreateUserUseCase:
-    def __init__(self, user_repository: UserRepository):
-        self.user_repository = user_repository
+    def __init__(self):
+        self.user_repository = UserRepository()
 
     def execute(self, data: dict) -> UserEntity:
         user = UserEntity(
