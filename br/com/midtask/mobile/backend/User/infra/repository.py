@@ -26,23 +26,20 @@ class UserRepository:
             updated_at=user_created.updated_at,
         )
     
-    def find_all(self, user: UserEntity = None):
-        users_founded = User.objects.all()
-        users_domain = []
-        for user in users_founded:
-            users_domain.append(UserEntity(
-                id=user.use_id,
-                name=user.use_name,
-                status=user.use_status,
-                email=user.use_email,
-                phone=user.use_phone,
-                login_type=user.use_login_type,
-                ip_address=user.use_ip_address,
-                created_at=user.created_at,
-                updated_at=user.updated_at,
-            ))
-            
-        return users_domain
+    def find(self, user: UserEntity):
+        users_founded = User.objects.get(use_id=user.id)
+
+        return UserEntity(
+            id=users_founded.use_id,
+            name=users_founded.use_name,
+            status=users_founded.use_status,
+            email=users_founded.use_email,
+            phone=users_founded.use_phone,
+            login_type=users_founded.use_login_type,
+            ip_address=users_founded.use_ip_address,
+            created_at=users_founded.created_at,
+            updated_at=users_founded.updated_at,
+        )
     
     def update(self, user: UserEntity):
         data_to_update = {}

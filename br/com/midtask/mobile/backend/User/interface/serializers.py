@@ -22,10 +22,6 @@ class UserInputSerializer(serializers.Serializer):
     phone = serializers.CharField()
     login_type = serializers.CharField()
     ip_address = serializers.IPAddressField()
-    permissions = serializers.ListField(
-        child=serializers.CharField(),
-        allow_empty=True
-    )
     created_at = serializers.DateField(required=False)
     updated_at = serializers.DateField(required=False)
     
@@ -54,11 +50,6 @@ class UserUpdateSerializer(serializers.Serializer):
     )
     phone = serializers.CharField(required=False)
     password = serializers.CharField(required=False)
-    permissions = serializers.ListField(
-        child=serializers.CharField(),
-        required=False
-    )
-
     def validate(self, data):
         if "password" in data and len(data["password"]) < 8:
             raise serializers.ValidationError({
@@ -84,3 +75,4 @@ class UserOutputSerializer(serializers.Serializer):
     created_at = serializers.DateTimeField()
     updated_at = serializers.DateTimeField()
     
+

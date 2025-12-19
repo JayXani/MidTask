@@ -20,7 +20,6 @@ def format_response(success: bool, message: str = "", data=None, err: Exception 
         response["message"] = message
 
     if err:
-
         match err:
             case ValidationError(): # Valida pelo objeto da classe
                 error["details"] = err.detail

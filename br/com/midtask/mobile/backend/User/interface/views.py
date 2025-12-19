@@ -1,5 +1,6 @@
 from ..application.use_cases.create_user_use_case import CreateUserUseCase
 from ..application.use_cases.update_user_use_case import UpdateUserUseCase
+from ..application.use_cases.get_user_use_case import GetUserUseCase
 from ..infra.messages import format_response
 from rest_framework_simplejwt.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -65,6 +66,23 @@ class UserViewer(APIView):
                 err=e
             ))
     
+    def get(self, request: Request, id: str):
+        try:
+            use_case = GetUserUseCase()
+            user_founded = use_case.execute(id)
+            output_serializer = UserOutputSerializer(user_founded)
+            
+            return Response(format_response(
+                success=True,
+                message="User founded !",
+                data=output_serializer.data
+            ))
+        except Exception as e:
+            return Response(format_response(
+                success=False,
+                message="Error to get the user !",              
+                err=e
+            ))
     
     
 
