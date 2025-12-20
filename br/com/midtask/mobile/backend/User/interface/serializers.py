@@ -1,7 +1,4 @@
 from rest_framework import serializers
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.exceptions import AuthenticationFailed
-from ..infra.messages import format_response
 from enum import Enum
 
 class Status(Enum):

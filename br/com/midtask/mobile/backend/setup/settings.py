@@ -47,7 +47,10 @@ THIRD_PARTY_APPS = [
 ]  # (Danilo) - Apps de terceiros
 LOCAL_APPS = [
     "User.apps.UserConfig",
-    "Task.apps.TaskConfig"
+    "Task.apps.TaskConfig",
+    "Labels.apps.LabelsConfig",
+    "Alerts.apps.AlertsConfig",
+    "LinksAssociates.apps.LinksassociatesConfig"
 ]  # (Danilo) - Apps locais
 
 # Application definition

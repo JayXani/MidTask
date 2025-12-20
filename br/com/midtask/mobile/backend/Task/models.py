@@ -2,34 +2,12 @@ from django.db import models
 from uuid import uuid4
 from django.conf import settings
 
-# Create your models here.
-class Labels(models.Model):
-    lab_id=models.UUIDField(primary_key=True, editable=False, default=uuid4)
-    lab_name=models.CharField(max_length=20, unique=True)
-    fk_lab_use_id = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
-    )
 
-class Alerts(models.Model):
-    ale_id=models.UUIDField(primary_key=True, editable=False, default=uuid4)
-    ale_date=models.DateTimeField()
-    ale_repeat=models.CharField(max_length=10)
-    fk_ale_use_id = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
-    )
+class StatusTask(models.TextChoices):
+    CONCLUDE= "CONCLUDE"
+    PENDING = "PENDING"
+    SCHEDULED="SCHEDULED"
 
-class LinksAssociates(models.Model):
-    asc_id=models.UUIDField(primary_key=True, editable=False, default=uuid4)
-    asc_name=models.CharField(unique=True, null=True)
-    asc_link_reference=models.TextField(unique=True)
-    asc_type=models.CharField(max_length=10)
-    asc_icon=models.TextField(null=True)
-    fk_asc_use_id = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
-    )
 
 class Task(models.Model):
     tsk_id=models.UUIDField(primary_key=True, editable=False, default=uuid4)
@@ -45,8 +23,25 @@ class Task(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
     )
-    fk_tsk_ale_id=models.ForeignKey(Alerts, on_delete=models.CASCADE)
-    labels=models.ManyToManyField(Labels)
-    associateLinks=models.ManyToManyField(LinksAssociates)
+    fk_tsk_ale_id=models.ForeignKey(
+        "Alerts.Alerts",
+        on_delete=models.CASCADE
+    )
+    labels=models.ManyToManyField(
+        'Labels.Labels',
+        blank=True
+    )
+    associateLinks=models.ManyToManyField(
+        'LinksAssociates.LinksAssociates',
+        blank=True
+    )
     created_at=models.DateField(auto_now_add=True)
     updated_at=models.DateField(auto_now_add=True)
+
+
+class CheckLists(models.Model):
+    che_id=models.UUIDField(primary_key=True, editable=False, default=uuid4)
+    che_name=models.CharField(max_length=30)
+    che_status=models.CharField(choices=StatusTask)
+    che_date=models.DateTimeField()
+    fk_che_tsk_id = models.ForeignKey(Task, on_delete=models.CASCADE)
