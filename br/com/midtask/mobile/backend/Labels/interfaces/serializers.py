@@ -12,6 +12,10 @@ class LabelInputSerializer(serializers.Serializer):
         return attrs
     
 
+class LabelFilterInputSerializer(serializers.Serializer):
+    labels=serializers.DictField()
+    
+
 class LabelOutputSerializer(serializers.Serializer):
     id = serializers.UUIDField()
     title = serializers.CharField()
