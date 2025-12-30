@@ -22,7 +22,7 @@ def format_response(success: bool, message: str = "", data=None, err: Exception 
     if err:
         match err:
             case ValidationError(): # Valida pelo objeto da classe
-                error["details"] = [err.detail]
+                error["details"] = err.detail
      
             case IntegrityError():
                 error["details"] = {
@@ -34,10 +34,10 @@ def format_response(success: bool, message: str = "", data=None, err: Exception 
                 }
 
             case ReturnDict():
-                error["details"] = [err]
+                error["details"] = [err] 
 
 
         if error["details"] is not None:
-            response["error"] = [error]
+            response["error"] = error
 
     return response

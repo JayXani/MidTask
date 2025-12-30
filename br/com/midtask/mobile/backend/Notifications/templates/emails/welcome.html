@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo ao MidTask</title>
+    <style>
+        /* Estilos inline para compatibilidade com email */
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7ff;
+        }
+        
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header {
+            background: linear-gradient(to right, #4A6CF7, #9859F5);
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .logo-section {
+            display: inline-block;
+            vertical-align: middle;
+        }
+        
+        .logo-text {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            margin-left: 10px;
+            vertical-align: middle;
+            display: inline-block;
+        }
+        
+        .welcome-section {
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .greeting {
+            font-size: 26px;
+            color: #2d3748;
+            margin-bottom: 20px;
+        }
+        
+        .user-name {
+            color: #4A6CF7;
+            font-weight: bold;
+        }
+        
+        .message {
+            font-size: 16px;
+            color: #4a5568;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+        
+        .highlight-box {
+            background-color: #f7f9ff;
+            border-left: 4px solid #4A6CF7;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: left;
+        }
+        
+        .next-steps {
+            text-align: left;
+            margin: 30px 0;
+        }
+        
+        .next-steps-title {
+            font-size: 20px;
+            color: #2d3748;
+            margin-bottom: 20px;
+        }
+        
+        .step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        
+        .step-number {
+            background-color: #4A6CF7;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .step-text {
+            flex: 1;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(to right, #4A6CF7, #9859F5);
+            color: white;
+            text-decoration: none;
+            padding: 16px 40px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 18px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .features {
+            background-color: #f9fafc;
+            padding: 30px;
+            margin-top: 30px;
+        }
+        
+        .features-title {
+            font-size: 22px;
+            color: #2d3748;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .feature-item {
+            display: inline-block;
+            width: 48%;
+            vertical-align: top;
+            margin-bottom: 20px;
+            text-align: center;
+            padding: 0 10px;
+        }
+        
+        .feature-icon {
+            color: #4A6CF7;
+            font-size: 24px;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .feature-text {
+            font-size: 14px;
+            color: #4a5568;
+        }
+        
+        .footer {
+            background-color: #1a202c;
+            color: #cbd5e0;
+            padding: 25px 30px;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .footer-links a {
+            color: #a0aec0;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        
+        .social-icons {
+            margin: 20px 0;
+        }
+        
+        .social-icons a {
+            display: inline-block;
+            margin: 0 8px;
+            color: #a0aec0;
+            text-decoration: none;
+        }
+        
+        .copyright {
+            font-size: 12px;
+            color: #718096;
+            margin-top: 20px;
+        }
+        
+        /* Responsividade para email */
+        @media only screen and (max-width: 600px) {
+            .feature-item {
+                width: 100%;
+                display: block;
+            }
+            
+            .welcome-section, .features, .footer {
+                padding: 25px 20px;
+            }
+            
+            .greeting {
+                font-size: 22px;
+            }
+            
+            .cta-button {
+                display: block;
+                padding: 14px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <!-- Cabeçalho com logo -->
+        <div class="header">
+            <div class="logo-section">
+                <!-- Logo SVG convertida para inline -->
+                <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
+                    <path d="M34.1714 0H11.8286C5.29583 0 0 5.29583 0 11.8286V34.1714C0 40.7042 5.29583 46 11.8286 46H34.1714C40.7042 46 46 40.7042 46 34.1714V11.8286C46 5.29583 40.7042 0 34.1714 0Z" fill="white"/>
+                    <path opacity="0.9" d="M22.8889 14H15.1111C14.4975 14 14 14.6716 14 15.5C14 16.3284 14.4975 17 15.1111 17H22.8889C23.5025 17 24 16.3284 24 15.5C24 14.6716 23.5025 14 22.8889 14Z" fill="#4A6CF7"/>
+                    <path opacity="0.9" d="M20.6667 21H15.3333C14.597 21 14 21.4477 14 22C14 22.5523 14.597 23 15.3333 23H20.6667C21.403 23 22 22.5523 22 22C22 21.4477 21.403 21 20.6667 21Z" fill="#4A6CF7"/>
+                    <path d="M18 28.625L22.2 32L32 23" stroke="#4A6CF7" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="logo-text">MidTask</span>
+            </div>
+        </div>
+        
+        <!-- Conteúdo principal -->
+        <div class="welcome-section">
+            <h1 class="greeting">Olá, <span class="user-name">{{name}}</span>!</h1>
+            
+            <p class="message">
+                É com grande prazer que damos as boas-vindas ao <strong>MidTask</strong>! 
+                Sua conta foi criada com sucesso e agora você tem acesso a uma plataforma 
+                completa de gerenciamento de tarefas e projetos.
+            </p>
+            
+            <div class="highlight-box">
+                <p style="margin: 0; font-style: italic;">
+                    "Sua produtividade está prestes a alcançar novos patamares. 
+                    O MidTask foi projetado para simplificar seu fluxo de trabalho 
+                    e ajudar você a focar no que realmente importa."
+                </p>
+            </div>
+            
+            <div class="next-steps">
+                <h2 class="next-steps-title">Primeiros passos no MidTask</h2>
+                
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-text">
+                        <strong>Complete seu perfil</strong><br>
+                        Adicione uma foto e detalhes sobre você para que sua equipe possa conhecê-lo melhor.
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-text">
+                        <strong>Explore o painel</strong><br>
+                        Conheça as principais funcionalidades e personalize seu espaço de trabalho.
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-text">
+                        <strong>Crie sua primeira tarefa</strong><br>
+                        Experimente criar uma tarefa e atribuí-la a um projeto ou colega.
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-text">
+                        <strong>Convide sua equipe</strong><br>
+                        Compartilhe o MidTask com seus colegas e colaborem juntos em projetos.
+                    </div>
+                </div>
+            </div>
+        
+            <p class="message" style="font-size: 14px;">
+                <strong>Dados da sua conta:</strong><br>
+                E-mail: {{email}}<br>
+                Data de criação: {{date_start}}
+            </p>
+        </div>
+        
+        <!-- Seção de funcionalidades -->
+        <div class="features">
+            <h2 class="features-title">O que você pode fazer com o MidTask</h2>
+            
+            <div class="feature-item">
+                <span class="feature-icon">✓</span>
+                <div class="feature-text">
+                    <strong>Gerenciar Tarefas</strong><br>
+                    Crie, organize e acompanhe todas as suas atividades
+                </div>
+            </div>
+            
+            <div class="feature-item">
+                <span class="feature-icon">👥</span>
+                <div class="feature-text">
+                    <strong>Colaboração</strong><br>
+                    Trabalhe em equipe com compartilhamento em tempo real
+                </div>
+            </div>
+            
+            <div class="feature-item">
+                <span class="feature-icon">📊</span>
+                <div class="feature-text">
+                    <strong>Relatórios</strong><br>
+                    Acompanhe métricas e progresso dos projetos
+                </div>
+            </div>
+            
+            <div class="feature-item">
+                <span class="feature-icon">🔔</span>
+                <div class="feature-text">
+                    <strong>Notificações</strong><br>
+                    Fique por dentro de todas as atualizações importantes
+                </div>
+            </div>
+        </div>
+        
+        <!-- Rodapé -->
+        <div class="footer">
+            <div class="social-icons">
+                <a href="https://facebook.com/midtask">Facebook</a> |
+                <a href="https://twitter.com/midtask">Twitter</a> |
+                <a href="https://linkedin.com/company/midtask">LinkedIn</a> |
+                <a href="https://instagram.com/midtask">Instagram</a>
+            </div>
+            
+            <p>
+                Precisa de ajuda? Consulte nossa <a href="https://midtask.example.com/ajuda">Central de Ajuda</a> 
+                ou entre em contato com nossa equipe: <a href="mailto:suporte@midtask.example.com">suporte@midtask.example.com</a>
+            </p>
+            
+            <div class="footer-links">
+                <a href="https://midtask.example.com/privacidade">Política de Privacidade</a> |
+                <a href="https://midtask.example.com/termos">Termos de Uso</a> |
+                <a href="https://midtask.example.com/contato">Contato</a>
+            </div>
+            
+            <div class="copyright">
+                © 2023 MidTask. Todos os direitos reservados.<br>
+                Esta é uma mensagem automática, por favor não responda a este e-mail.
+            </div>
+        </div>
+    </div>
+</body>
+</html>

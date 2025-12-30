@@ -50,7 +50,8 @@ LOCAL_APPS = [
     "Task.apps.TaskConfig",
     "Labels.apps.LabelsConfig",
     "Alerts.apps.AlertsConfig",
-    "LinksAssociates.apps.LinksassociatesConfig"
+    "LinksAssociates.apps.LinksassociatesConfig",
+    "Notifications.apps.NotificationsConfig"
 ]  # (Danilo) - Apps locais
 
 # Application definition
@@ -78,7 +79,7 @@ REST_FRAMEWORK = {
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS":[BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -98,6 +99,15 @@ WSGI_APPLICATION = "setup.wsgi.application"
 
 DATABASES = {"default": db_url(os.getenv("DATABASE_URL"))}
 
+#Emails
+EMAIL_BACKEND = os.getenv("EMAIL_BACKEND")
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_PORT = os.getenv("EMAIL_PORT")
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL =os.getenv("DEFAULT_FROM_EMAIL")
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -118,7 +128,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 SIMPLE_JWT = {
     "USER_ID_FIELD": "use_id",  # Toda vez que alteramos o campo default id do user, temos que adicionar o novo aqui, para o JWT saber qual é o novo campo id
-    "USER_ID_CLAIM": "user_id",
+    "USER_ID_CLAIM": "use_id",
     "ACCESS_TOKEN_LIFETIME": timedelta(days=7), # Tempo de vida para o token principal
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1), # Tempo de vida para você usar o token antigo e gerar um novo
 }
