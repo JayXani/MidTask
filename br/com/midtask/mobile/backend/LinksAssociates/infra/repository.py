@@ -1,6 +1,7 @@
 from ..domain.entities import LinksEntity
 from ..models import LinksAssociates
 from User.models import User
+from django.db.models import Q
 
 class LinksAssociatesRepository():
     dict_keys = {
@@ -61,3 +62,38 @@ class LinksAssociatesRepository():
             link_type=link_updated.asc_type,
             icon=link_updated.asc_icon
         )
+    
+    def findall(self, links_entities: list[LinksEntity], user_id: str):
+        query = Q()
+        for link in links_entities:
+            q_link = Q()
+
+            if link.id:
+                q_link |= Q(asc_id=link.id)
+
+            if link.link_reference:
+                q_link |= Q(asc_link_reference__icontains=link.link_reference)
+
+            if link.name:
+                q_link |= Q(asc_name__icontains=link.name)
+
+            if link.link_type:
+                q_link |= Q(asc_type__icontains=link.link_type)
+
+            query |= q_link
+
+        links_founded: list[LinksAssociates] = LinksAssociates.objects.filter(
+            query,
+            fk_asc_use_id=user_id
+        )
+        if not links_founded: return []
+        return [
+            LinksEntity(
+                id=flink.asc_id,
+                icon=flink.asc_icon,
+                link_type=flink.asc_type,
+                name=flink.asc_name,
+                link_reference=flink.asc_link_reference
+            )
+            for flink in links_founded
+        ]

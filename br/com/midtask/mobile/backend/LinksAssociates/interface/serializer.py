@@ -32,3 +32,20 @@ class LinksOutputSerializer(serializers.Serializer):
     link_type=serializers.CharField()
     icon=serializers.CharField(allow_null=True)
 
+
+class LinkListInputSerializer(serializers.Serializer):
+    id=serializers.ListField(
+        child=serializers.CharField()
+    )
+    name=serializers.ListField(
+        child=serializers.CharField()
+    )
+
+    link_reference=serializers.ListField(
+        child=serializers.CharField()
+    )
+    
+    link_type=serializers.ListField(
+        child=serializers.CharField()
+    )
+    
