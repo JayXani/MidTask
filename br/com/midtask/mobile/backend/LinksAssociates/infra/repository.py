@@ -97,3 +97,11 @@ class LinksAssociatesRepository():
             )
             for flink in links_founded
         ]
+    
+    def delete(self, link_entity: list[LinksEntity], user_id: str):
+        link_deleted = LinksAssociates.objects.filter(
+            asc_id__in=[link.id for link in link_entity],
+            fk_asc_use_id=user_id
+        ).delete()
+
+        return link_deleted

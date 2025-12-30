@@ -26,15 +26,15 @@ def format_response(success: bool, message: str = "", data=None, err: Exception 
      
             case IntegrityError():
                 error["details"] = {
-                    "unique_key_violated": [str(err.args)]
+                    "unique_key_violated": str(err.args)
                 }
             case Exception():
                 error["details"] = {
-                    "default": [str(err)]
+                    "default": str(err)
                 }
 
             case ReturnDict():
-                error["details"] = [err] 
+                error["details"] = err
 
 
         if error["details"] is not None:

@@ -13,6 +13,7 @@ from ..application.use_cases.create_link_use_case import CreateLinksUseCase
 from ..application.use_cases.update_link_use_case import UpdateLinksUseCase
 from ..application.use_cases.find_link_use_case import FindUniqueLinkUseCase
 from ..application.use_cases.findall_link_use_case import FindAllLinksUseCase
+from ..application.use_cases.delete_link_use_case import DeleteLinkUseCase
 
 # Create your views here.
 class LinksView(APIView):
@@ -80,6 +81,32 @@ class LinksView(APIView):
             return Response(format_response(
                 success=False,
                 message="Failed to get the link", 
+                err=e
+            ))
+
+    def delete(self, request:Request):
+        try:
+            input_serializer = LinkListInputSerializer(data=request.data)
+            input_serializer.is_valid(raise_exception=True)
+
+            use_case = DeleteLinkUseCase()
+            links_deleted = use_case.execute(input_serializer.validated_data, request.user.use_id)
+            
+            if(not len(links_deleted) or (len(links_deleted) and links_deleted[0] <= 0)): return Response(format_response(
+                success=True,
+                message="Success ! You don't anyone register !",
+                data={}
+            ))
+            return Response(format_response(
+                success=True,
+                data={},
+                message="Success ! Data deleted."
+            ))
+        
+        except Exception as e:
+            return Response(format_response(
+                success=True,
+                message="Error to delete the link",
                 err=e
             ))
 
