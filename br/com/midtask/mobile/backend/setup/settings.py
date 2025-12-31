@@ -51,7 +51,9 @@ LOCAL_APPS = [
     "Labels.apps.LabelsConfig",
     "Alerts.apps.AlertsConfig",
     "LinksAssociates.apps.LinksassociatesConfig",
-    "Notifications.apps.NotificationsConfig"
+    "Notifications.apps.NotificationsConfig",
+    "Checklists.apps.ChecklistsConfig",
+    "Status.apps.StatusConfig"
 ]  # (Danilo) - Apps locais
 
 # Application definition

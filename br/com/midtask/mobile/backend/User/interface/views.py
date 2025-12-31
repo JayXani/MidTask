@@ -44,13 +44,13 @@ class UserViewer(APIView):
         except Exception as e: 
             return Response(format_response(False, err=e))
     
-    def patch(self, request: Request, id: str):
+    def patch(self, request: Request):
         try: 
             serializer = UserUpdateSerializer(data=request.data, partial=True) #partial=True, indica que somente os dados com valores serao atualizados/serializados
             serializer.is_valid(raise_exception=True)
             
             use_case = UpdateUserUseCase()
-            user_updated = use_case.execute(serializer.data, id)
+            user_updated = use_case.execute(serializer.data, request.user.use_id)
             serializer_output = UserOutputSerializer(user_updated)
 
             return Response(format_response(
@@ -66,10 +66,10 @@ class UserViewer(APIView):
                 err=e
             ))
     
-    def get(self, request: Request, id: str):
+    def get(self, request: Request):
         try:
             use_case = GetUserUseCase()
-            user_founded = use_case.execute(id)
+            user_founded = use_case.execute(request.user.use_id)
             output_serializer = UserOutputSerializer(user_founded)
             
             return Response(format_response(
