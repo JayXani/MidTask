@@ -1,5 +1,5 @@
 from ...domain.entities import AlertEntity
-from ...domain.service.CreateAlertsPolicy import (
+from ...domain.service.AlertsPolicy import (
     validate_dates_repeat
 )
 from ...infra.repository import AlertsRepository

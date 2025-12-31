@@ -4,6 +4,7 @@ from User.models import User
 from django.db.models import Q
 
 class AlertsRepository():
+    dict_keys = {}
     def create(self, alert_entity: AlertEntity, user_id: str):
         alert_created = Alerts.objects.create(
             ale_id=alert_entity.id,
@@ -36,3 +37,46 @@ class AlertsRepository():
                 repeat=alert.ale_repeat
             ) for alert in alerts_filtered
         ]
+    
+    def find(self, alert_entity: AlertEntity, user_id: str):
+        alert_founded = Alerts.objects.get(
+            ale_id=alert_entity.id,
+            fk_ale_use_id=user_id
+        )
+        if not alert_founded: return []
+        return [
+            AlertEntity(
+                id=alert_founded.ale_id,
+                date=alert_founded.ale_date,
+                repeat=alert_founded.ale_repeat
+            )
+        ]
+    
+    def update(self, alert_entity: AlertEntity, user_id: str):
+        if alert_entity.date: self.dict_keys["ale_date"] = alert_entity.date
+        if alert_entity.repeat: self.dict_keys["ale_repeat"] = alert_entity.repeat
+        
+        Alerts.objects.filter(
+            ale_id=alert_entity.id,
+            fk_ale_use_id=user_id
+        ).update(**self.dict_keys)
+
+        alert_founded = Alerts.objects.get(
+            ale_id=alert_entity.id,
+            fk_ale_use_id=user_id
+        )
+        return [
+            AlertEntity(
+                id=alert_founded.ale_id,
+                date=alert_founded.ale_date,
+                repeat=alert_founded.ale_repeat
+            )
+        ]
+    
+    def delete(self, alert_entity: list[AlertEntity], user_id: str):
+        alerts_deleted = Alerts.objects.filter(
+            ale_id__in=[alert.id for alert in alert_entity],
+            fk_ale_use_id=user_id
+        ).delete()
+
+        return alerts_deleted
