@@ -22,16 +22,16 @@ class StatusRepository():
     
     def findall(self, status_entity: list[StatusEntity], user_id: str):
         query = Q()
-
         for status in status_entity:
-            query |= Q(sta_id=status.id) | Q(sta_name__contains=status.name)
+            if(status.id): query |= Q(sta_id=status.id)
+            if(status.name): query |=Q(sta_name__contains=status.name or "")
 
         status_founded = Status.objects.filter(
             query,
             fk_sta_use_id=user_id
         )
 
-        if status_founded: return []
+        if not status_founded: return []
         return [
             StatusEntity(
                 id=status.sta_id,
@@ -39,6 +39,7 @@ class StatusRepository():
             ) for status in status_founded
         ]
     
+
     def delete(self, status_entity: list[StatusEntity], user_id: str):
         status_deleted = Status.objects.filter(
             sta_id__in=[status.id for status in status_entity],

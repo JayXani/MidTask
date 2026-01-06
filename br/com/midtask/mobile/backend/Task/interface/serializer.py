@@ -1,11 +1,11 @@
 from rest_framework import serializers
 from enum import Enum
 
-class TaskStatusEnum(Enum):
-    STOPPED = "Stopped"
-    RUNNING = "Running"
-    CONCLUDE = "Conclude"
-    IN_BACKLOG="Backlog"
+class RecurrenceEnum(Enum):
+    MONTH="month"
+    WEEK="week"
+    DAY="day"
+    NULL=None
 
 class TaskInputSerializer(serializers.Serializer):
     id=serializers.UUIDField(required=False)
@@ -15,4 +15,40 @@ class TaskInputSerializer(serializers.Serializer):
     )
     description=serializers.CharField(
         required=True
+    )
+    recurrence=serializers.ChoiceField(
+        choices=[v.name for v in RecurrenceEnum],
+        required=False
+    )
+    recurrence_end_in=serializers.DateTimeField(
+        format="%Y-%m-%d %H:%M:%S",
+        required=False    
+    )
+    expected_conclude_in=serializers.DateTimeField(
+        format="%Y-%m-%d %H:%M:%S",
+        required=False    
+    )
+    conclude_at=serializers.DateTimeField(
+        format="%Y-%m-%d %H:%M:%S",
+        required=False    
+    )
+    background=serializers.CharField(
+        required=True,
+        max_length=10
+    )
+    status_id=serializers.ListField(
+        required=True,
+        child=serializers.UUIDField()
+    )
+    alert_id=serializers.ListField(
+        required=False,
+        child=serializers.UUIDField()
+    )
+    labels_id=serializers.ListField(
+        required=False,
+        child=serializers.UUIDField()
+    )
+    links_id=serializers.ListField(
+        required=False,
+        child=serializers.UUIDField()
     )
