@@ -2,18 +2,19 @@ from django.db import models
 from uuid import uuid4
 from django.conf import settings
 
+
 class Task(models.Model):
     tsk_id=models.UUIDField(primary_key=True, editable=False, default=uuid4)
-    tsk_title=models.CharField(max_length=30)
+    tsk_title=models.CharField(max_length=30, unique=True)
     tsk_description=models.TextField()
-    tsk_recurrence=models.CharField(max_length=10)
-    tsk_recurrence_end_in=models.DateTimeField()
-    tsk_conclude_expected_at=models.DateTimeField()
-    tsk_conclude_at=models.DateTimeField()
+    tsk_recurrence=models.CharField(max_length=10,  null=True)
+    tsk_recurrence_end_in=models.DateTimeField(null=True)
+    tsk_conclude_expected_at=models.DateTimeField(null=True)
+    tsk_conclude_at=models.DateTimeField(null=True)
     tsk_background=models.CharField(max_length=15)
-    fk_tsk_sta_id=models.ManyToManyField(
+    fk_tsk_sta_id=models.ForeignKey(
         "Status.Status",
-        blank=True
+        on_delete=models.CASCADE
     )
     fk_tsk_use_id = models.ForeignKey(
         settings.AUTH_USER_MODEL,
