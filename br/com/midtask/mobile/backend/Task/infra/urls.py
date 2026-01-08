@@ -2,5 +2,6 @@ from django.urls import path
 from ..interface.views import TaskView
 
 urlpatterns = [
-    path("", TaskView.as_view())
+    path("", TaskView.as_view()),
+    path("<uuid:id>", TaskView.as_view())
 ]

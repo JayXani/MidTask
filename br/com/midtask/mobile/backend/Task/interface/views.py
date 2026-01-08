@@ -7,7 +7,8 @@ from .serializer import (
     TaskInputSerializer,
     TaskOutputSerializer
 )
-from ..application.use_cases.CreateTaskUseCase import CreateTaskUseCase
+from ..application.use_cases.create_task_use_case import CreateTaskUseCase
+from ..application.use_cases.find_unique_task_use_case import FindUniqueTaskUseCase
 
 class TaskView(APIView):
     permission_classes = [IsAuthenticated]
@@ -30,5 +31,24 @@ class TaskView(APIView):
             return Response(format_response(
                 success=False,
                 message="Error to create a task",
+                err=e
+            ))
+
+    def get(self, request: Request, id: str):
+        try:    
+            use_case = FindUniqueTaskUseCase()
+            task_founded = use_case.execute(id, request.user.use_id)
+
+            output_serializer = TaskOutputSerializer(instance=task_founded, many=True)
+
+            return Response(format_response(
+                success=True,
+                message="Success ! Tasks founded.",
+                data=output_serializer.data
+            ))
+        except Exception as e:
+            return Response(format_response(
+                success=False,
+                message="Error to get the task",
                 err=e
             ))
