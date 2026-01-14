@@ -95,3 +95,11 @@ class TaskRepository():
                 updated_at =tsk.updated_at
             ) for tsk in task_founded
         ]
+    
+    def delete(self, task_entities: list[TaskEntity], user_id: str):
+        tasks_deleted = Task.objects.filter(
+            tsk_id__in=[task.id for task in task_entities],
+            fk_tsk_use_id=user_id
+        ).delete()
+
+        return tasks_deleted

@@ -5,10 +5,12 @@ from rest_framework.response import Response
 from ..infra.messages import format_response
 from .serializer import (
     TaskInputSerializer,
-    TaskOutputSerializer
+    TaskOutputSerializer,
+    TaskListInputSerializer
 )
 from ..application.use_cases.create_task_use_case import CreateTaskUseCase
 from ..application.use_cases.find_unique_task_use_case import FindUniqueTaskUseCase
+from ..application.use_cases.delete_task_use_case import DeleteTaskUseCase
 
 class TaskView(APIView):
     permission_classes = [IsAuthenticated]
@@ -50,5 +52,30 @@ class TaskView(APIView):
             return Response(format_response(
                 success=False,
                 message="Error to get the task",
+                err=e
+            ))
+
+    def delete(self, request: Request):
+        try: 
+            input_serializer =  TaskListInputSerializer(data=request.data)
+            input_serializer.is_valid(raise_exception=True)
+
+            use_case = DeleteTaskUseCase()
+            tasks_deleted = use_case.execute(input_serializer.validated_data, request.user.use_id)
+            if(not len(tasks_deleted) or (len(tasks_deleted) and tasks_deleted[0] <= 0)): return Response(format_response(
+                success=True,
+                message="Success ! You don't anyone register !",
+                data={}
+            ))
+
+            return Response(format_response(
+                success=True,
+                data={},
+                message="Success ! Data deleted."
+            ))
+        except Exception as e:
+            return Response(format_response(
+                success=False,
+                message="Error to delete the task",
                 err=e
             ))

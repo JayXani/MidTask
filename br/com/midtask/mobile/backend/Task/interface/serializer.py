@@ -41,3 +41,9 @@ class TaskOutputSerializer(serializers.Serializer):
     background = serializers.CharField()
     created_at = serializers.CharField()
     updated_at = serializers.CharField()
+
+
+class TaskListInputSerializer(serializers.Serializer):
+    id=serializers.ListField(
+        child=serializers.UUIDField()
+    )
