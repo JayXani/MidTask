@@ -8,10 +8,10 @@ from ...domain.validations.task_validations import (
 )
 class TaskServicePolicy():
     def create_task_validation(self, task_entity: TaskEntity, user_id: str):
-        if(task_entity.alert_id): alerts_exists(task_entity.alert_id, user_id)
-        if(task_entity.labels_id): labels_exists(task_entity.labels_id, user_id)
-        if(task_entity.links_id): links_exists(task_entity.links_id, user_id)
-        if(task_entity.status_id): status_exists(task_entity.status_id, user_id)
+        if(task_entity.alerts): alerts_exists(task_entity.alert_id, user_id)
+        if(task_entity.labels): labels_exists(task_entity.labels, user_id)
+        if(task_entity.links): links_exists(task_entity.link, user_id)
+        if(task_entity.status): status_exists(task_entity.status, user_id)
 
         if(task_entity.recurrence):
             recurrence_is_date = date_valid(task_entity.recurrence)

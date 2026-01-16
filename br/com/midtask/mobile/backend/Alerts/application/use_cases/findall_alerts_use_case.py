@@ -1,5 +1,4 @@
 from ...infra.repository import AlertsRepository
-from ...domain.entities import AlertEntity
 from ...domain.service.AlertsPolicy import normalize_payload
 
 class FindAllAlertsUseCase():

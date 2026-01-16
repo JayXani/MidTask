@@ -12,9 +12,9 @@ class TaskEntity():
     expected_conclude_in: datetime | None = None
     conclude_at: datetime | None = None
     background: str | None = None
-    status_id: list[str] | None = None
-    alert_id: list[str] | None = None
-    labels_id: list[str] | None = None
-    links_id: list[str] | None = None
+    status: list[str] | None = None
+    alerts: list[str] | None = None
+    labels: list[str] | None = None
+    links: list[str] | None = None
     created_at: datetime | None = field(default_factory=datetime.now)
     updated_at: datetime | None = field(default_factory=datetime.now)
