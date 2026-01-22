@@ -8,11 +8,15 @@ class CheckListPolicyService():
     def validate_to_create(self):
         date_now = datetime.now()
         date_entity = self.entity.date
-
-        if(self.entity.date.time() < date_now.time() and (date_entity.date() >= date_now.date())): raise Exception("The date cannot be less than now !")
-        if(self.entity.status.upper() == "SCHEDULED"): self.validate_date_scheduling(date_now)
+        if(date_entity):
+            if(date_entity.time() < date_now.time() and (date_entity.date() <= date_now.date())): raise Exception("The date cannot be less than now !")
+            if(self.entity.status.upper() == "SCHEDULED"): self.validate_date_scheduling(date_now)
 
 
     def validate_date_scheduling(self, date_now: datetime):
+        next_valid_hour = date_now + timedelta(hours=1)
         if(not self.entity.date): raise Exception("You choose the SCHEDULED status, but you din't sended the date of scheduling")
-        if(self.entity.date.time() < (date_now + timedelta(hours=1)).time()): raise Exception("You can scheduling only after 1 hour of the date now !")
+        if(
+            self.entity.date.time() <= next_valid_hour.time() and 
+            self.entity.date.date() <= next_valid_hour.date()
+        ): raise Exception("You can scheduling only after 1 hour of the date now !")

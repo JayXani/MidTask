@@ -6,13 +6,7 @@ from django.db.models import Q
 
 
 class ChecklistRepository:
-    dict_keys = {
-        "che_name": "",
-        "che_status": "",
-        "che_date": "",
-        "che_description": "",
-        "fk_che_tsk_id": "",
-    }
+    dict_keys = {}
 
     def create(self, checklist: ChecklistEntity, user_id: str):
         checklist_created = CheckLists.objects.create(
@@ -22,8 +16,11 @@ class ChecklistRepository:
             che_date=checklist.date,
             che_description=checklist.description,
             fk_che_use_id=User.objects.get(use_id=user_id),
-            fk_che_tsk_id=Task.objects.get(tsk_id=checklist.task_id)
         )
+        if(checklist.task_id):
+            checklist_created.objects.filter(che_id=checklist.id, fk_che_use_id=user_id).update(
+                fk_use_tsk_id=Task.objects.get(tsk_id=checklist.task_id)
+            )
 
         return [
             ChecklistEntity(
@@ -38,7 +35,7 @@ class ChecklistRepository:
     def delete(self, checklists: list[ChecklistEntity], user_id: str):
         checklists_deleted = CheckLists.objects.filter(
             che_id__in=[v.id for v in checklists], fk_che_use_id=user_id
-        )
+        ).delete()
 
         return checklists_deleted
 
@@ -60,7 +57,6 @@ class ChecklistRepository:
                 query |= Q(che_description__contains=check.description)
 
         checklists_founded = CheckLists.objects.filter(query, fk_che_use_id=user_id)
-
         return [
             ChecklistEntity(
                 id=che.che_id,
@@ -81,7 +77,7 @@ class ChecklistRepository:
         if checklists.status:
             self.dict_keys["che_status"] = checklists.status
         if checklists.task_id:
-            self.dict_keys["fk_che_tsk_id"] = checklists.task_id
+            self.dict_keys["fk_che_tsk_id"] = Task.objects.get(tsk_id=checklists.task_id)
         if checklists.description:
             self.dict_keys["che_description"] = checklists.description
 

@@ -83,7 +83,7 @@ class TaskView(APIView):
                 err=e
             ))
         
-    def put(self, request: Request, id: str):
+    def patch(self, request: Request, id: str):
         try:
             input_serializer = TaskUpdateInputSerializer(data=request.data)
             input_serializer.is_valid(raise_exception=True)

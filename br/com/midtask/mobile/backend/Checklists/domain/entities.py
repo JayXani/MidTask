@@ -6,6 +6,6 @@ class ChecklistEntity:
     id:UUID | None = field(default_factory=uuid4)
     name: str | None = None
     status: str | None = None
-    date: datetime | None = field(default_factory=datetime.now)
+    date: datetime | None = None
     description: str | None = None
     task_id: UUID | None | list = None
