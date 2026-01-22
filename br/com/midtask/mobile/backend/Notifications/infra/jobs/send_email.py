@@ -7,12 +7,12 @@ from django.conf import settings
 @shared_task(bind=True, autoretry_for=(Exception,), retry_kwargs={'max_retries': 3, 'countdown': 10})
 def send_welcome_email_task(self, context: dict, recipient: str):
     html_content = render_to_string(
-        "emails/welcome.html",
+        context.get("path"),
         context
     )
 
     email = EmailMultiAlternatives(
-        subject="Bem-vindo à plataforma 🎉",
+        subject=context.get("subject", ""),
         from_email=settings.DEFAULT_FROM_EMAIL,
         to=[recipient],
     )

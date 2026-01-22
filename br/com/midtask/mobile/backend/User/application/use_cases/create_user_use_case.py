@@ -19,6 +19,8 @@ class CreateUserUseCase:
                 {
                     "name": user_created.name,
                     "date_start": user_created.created_at.strftime("%d/%m/%Y"),
+                    "path":"emails/welcome.html",
+                    "subject":"Bem-vindo à plataforma 🎉", 
                     "email": user_created.email,
                 },
                 user_created.email
