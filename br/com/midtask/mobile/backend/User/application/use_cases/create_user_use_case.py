@@ -16,10 +16,10 @@ class CreateUserUseCase:
         user_created = self.user_repository.save(user)
         if user_created:
             send_welcome_email_task.delay(
+                "emails/welcome.html",
                 {
                     "name": user_created.name,
                     "date_start": user_created.created_at.strftime("%d/%m/%Y"),
-                    "path":"emails/welcome.html",
                     "subject":"Bem-vindo à plataforma 🎉", 
                     "email": user_created.email,
                 },
