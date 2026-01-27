@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Tarefa Atribuída - MidTask</title>
+    <style>
+        /* Estilos inline para compatibilidade com email */
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7ff;
+        }
+        
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header {
+            background: linear-gradient(to right, #4A6CF7, #9859F5);
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .logo-section {
+            display: inline-block;
+            vertical-align: middle;
+        }
+        
+        .logo-text {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            margin-left: 10px;
+            vertical-align: middle;
+            display: inline-block;
+        }
+        
+        .content-section {
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .greeting {
+            font-size: 24px;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+        
+        .user-name {
+            color: #4A6CF7;
+            font-weight: bold;
+        }
+
+        .task-alert {
+            font-size: 18px;
+            color: #4a5568;
+            margin-bottom: 25px;
+        }
+        
+        .highlight-box {
+            background-color: #f7f9ff;
+            border-left: 4px solid #4A6CF7;
+            padding: 20px;
+            margin: 25px 0;
+            text-align: left;
+        }
+
+        .task-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2d3748;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .task-details {
+            text-align: left;
+            margin: 30px 0;
+            border-top: 1px solid #edf2f7;
+            padding-top: 20px;
+        }
+        
+        .detail-row {
+            margin-bottom: 12px;
+            font-size: 15px;
+            color: #4a5568;
+        }
+
+        .detail-label {
+            font-weight: bold;
+            color: #718096;
+            width: 100px;
+            display: inline-block;
+        }
+
+        .priority-badge {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        /* Cores dinâmicas para prioridade - Exemplo */
+        .priority-high { background-color: #fff5f5; color: #e53e3e; }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(to right, #4A6CF7, #9859F5);
+            color: white !important;
+            text-decoration: none;
+            padding: 16px 40px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 16px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .footer {
+            background-color: #1a202c;
+            color: #cbd5e0;
+            padding: 25px 30px;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .footer-links a {
+            color: #a0aec0;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        
+        .copyright {
+            font-size: 12px;
+            color: #718096;
+            margin-top: 20px;
+        }
+        
+        @media only screen and (max-width: 600px) {
+            .content-section, .footer {
+                padding: 25px 20px;
+            }
+            .detail-label {
+                display: block;
+                margin-bottom: 2px;
+            }
+            .cta-button {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <div class="logo-section">
+                <svg width="40" height="40" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
+                    <path d="M34.1714 0H11.8286C5.29583 0 0 5.29583 0 11.8286V34.1714C0 40.7042 5.29583 46 11.8286 46H34.1714C40.7042 46 46 40.7042 46 34.1714V11.8286C46 5.29583 40.7042 0 34.1714 0Z" fill="white"/>
+                    <path opacity="0.9" d="M18 28.625L22.2 32L32 23" stroke="#4A6CF7" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="logo-text">MidTask</span>
+            </div>
+        </div>
+        
+        <div class="content-section">
+            <h1 class="greeting">Olá !</h1>
+            <p class="task-alert">Uma nova <span class="user-name">tarefa</span> foi atribuída a você.</p>
+            
+            <div class="highlight-box">
+                <span class="task-title">{{task_name}}</span>
+                <p style="margin: 5px 0 0 0; color: #718096; font-size: 14px;">
+                    Criada em: {{created_at}}
+                </p>
+            </div>
+            
+            <div class="task-details">
+                <div class="detail-row">
+                    <span class="detail-label">Prazo:</span>
+                    <span style="color: #e53e3e; font-weight: bold;">{{due_date}}</span>
+                </div>
+                <div class="detail-row" style="margin-top: 15px;">
+                    <span class="detail-label" style="display: block; margin-bottom: 5px;">Descrição:</span>
+                    <span style="font-size: 14px; font-style: italic; color: #4a5568;">"{{task_description}}"</span>
+                </div>
+            </div>
+        
+            <a href="{{task_url}}" class="cta-button">Ver Tarefa no Painel</a>
+        </div>
+        
+        <div class="footer">
+            <p>
+                Você está recebendo este e-mail porque está configurado para receber notificações de novas tarefas no <strong>MidTask</strong>.
+            </p>
+            
+            <div class="footer-links">
+                <a href="#">Configurações de Notificação</a> |
+                <a href="#">Suporte</a>
+            </div>
+            
+            <div class="copyright">
+                © 2026 MidTask. Todos os direitos reservados.<br>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
