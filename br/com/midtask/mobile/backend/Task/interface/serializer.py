@@ -41,7 +41,7 @@ class TaskOutputSerializer(serializers.Serializer):
     recurrence_end_in = serializers.DateTimeField()
     expected_conclude_in = serializers.CharField()
     alerts = OutputSerializer(many=True)
-    status = StatusOutputSerializer(many=True)
+    status = StatusOutputSerializer()
     labels = LabelOutputSerializer(many=True)
     conclude_at = serializers.CharField()
     background = serializers.CharField()

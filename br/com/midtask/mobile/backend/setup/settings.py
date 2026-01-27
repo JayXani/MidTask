@@ -40,7 +40,8 @@ DJANGO_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-    "django.contrib.staticfiles"
+    "django.contrib.staticfiles",
+    "django_crontab"
 ]  # (Danilo) - Apps of the django
 THIRD_PARTY_APPS = [
     "rest_framework"
@@ -58,6 +59,10 @@ LOCAL_APPS = [
 
 # Application definition
 INSTALLED_APPS = [*DJANGO_APPS, *THIRD_PARTY_APPS, *LOCAL_APPS]
+
+CRONJOBS = [
+    ('0 * * * *', 'Task.cron.send_alerts')
+]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

@@ -11,7 +11,6 @@ class CreateTaskUseCase():
         task_entity = TaskEntity(**task)
         service_policy = TaskServicePolicy()
         service_policy.create_task_validation(task_entity, user_id)
-
         task_created = self.repository.create(task_entity, user_id)
         # if(len(task_created)): #Atualizar depois
         #     new_task = task_created[0]
