@@ -175,3 +175,36 @@ class TaskRepository():
 
         if len(links_to_remove): task_founded.fk_tsk_asc_id.remove(*LinksAssociates.objects.filter(asc_id__in=links_to_remove))
         if len(links_to_add): task_founded.fk_tsk_asc_id.add(*LinksAssociates.objects.filter(asc_id__in=links_to_add, fk_asc_use_id=user_id))
+
+    
+    def findall_tasks_to_expired(self, timezone_hours: str = "-3"):
+        operator = "-" if "-" in timezone_hours else "+"
+        timezone_cleaned = int(timezone_hours.replace("+", "").replace("-", "").strip())
+        
+        query = f""" 
+            SELECT 
+                tsk.tsk_id, 
+                ale.ale_date,
+                ale.ale_id
+            FROM "Task_task" AS tsk
+            INNER JOIN "Task_task_fk_tsk_ale_id" AS ts_ale ON ts_ale.task_id = tsk.tsk_id
+            INNER JOIN "Alerts_alerts" AS ale ON ale.ale_id = ts_ale.alerts_id
+            INNER JOIN "Status_status" AS sta ON sta.sta_id = tsk.fk_tsk_sta_id_id
+            WHERE 
+                sta.sta_name != 'CONCLUDE' AND
+                ale.ale_date >= date_trunc('day', now() {operator} interval '{timezone_cleaned} hours') + interval '1 day'
+                AND ale.ale_date <  date_trunc('day', now() {operator} interval '{timezone_cleaned}hours') + interval '2 day';
+        """
+
+        tickets_to_expired = Task.objects.raw(query)
+
+        return [
+            TaskEntity(
+                id=tsk.tsk_id,
+                alerts= [AlertEntity(
+                    id=x.ale_id,
+                    date=x.ale_date,
+                    repeat=x.ale_repeat
+                ) for x in tsk.fk_tsk_ale_id.all()],
+            ) for tsk in tickets_to_expired
+        ]

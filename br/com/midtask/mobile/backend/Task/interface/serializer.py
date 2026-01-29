@@ -80,3 +80,6 @@ class TaskUpdateInputSerializer(serializers.Serializer):
     alerts = serializers.ListField(required=False, child=serializers.UUIDField())
     labels = serializers.ListField(required=False, child=serializers.UUIDField())
     links = serializers.ListField(required=False, child=serializers.UUIDField())
+
+class TimezoneSerializer(serializers.Serializer):
+    timezone = serializers.CharField(max_length=4, required=True)

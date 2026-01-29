@@ -7,13 +7,15 @@ from .serializer import (
     TaskInputSerializer,
     TaskOutputSerializer,
     TaskUpdateInputSerializer,
-    TaskListInputSerializer
+    TaskListInputSerializer,
+    TimezoneSerializer
 )
 from ..application.use_cases.create_task_use_case import CreateTaskUseCase
 from ..application.use_cases.find_unique_task_use_case import FindUniqueTaskUseCase
 from ..application.use_cases.delete_task_use_case import DeleteTaskUseCase
 from ..application.use_cases.update_task_use_case import UpdateTaskUseCase
 from ..application.use_cases.findall_task_use_case import FindAllTaskUseCase
+from ..application.use_cases.findall_tasks_expired_use_case import FindAllTasksExpiredUseCase
 
 class TaskView(APIView):
     permission_classes = [IsAuthenticated]
@@ -102,7 +104,7 @@ class TaskView(APIView):
                 message="Error to update task",
                 err=e
             ))
-        
+    
 
 class TaskListView(APIView):
     permission_classes=[IsAuthenticated]
@@ -125,5 +127,28 @@ class TaskListView(APIView):
             return Response(format_response(
                 success=False,
                 message="Error to findall tasks",
+                err=e
+            ))
+        
+class TaskExpiredView(APIView):
+
+    def post(self, request: Request):
+        try:
+            input_serializer = TimezoneSerializer(data=request.data)
+            input_serializer.is_valid(raise_exception=True)
+
+            use_case = FindAllTasksExpiredUseCase()
+            tasks_founded = use_case.execute(input_serializer.validated_data)
+
+            output_serializer = TaskOutputSerializer(instance=tasks_founded, many=True)
+            return Response(format_response(
+                success=True,
+                message="Success ! Alerts sended",
+                data=output_serializer.data
+            ))
+        except Exception as e:
+            return Response(format_response(
+                success=False,
+                message="Error to get tasks",
                 err=e
             ))
