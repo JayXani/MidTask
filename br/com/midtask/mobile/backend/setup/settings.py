@@ -32,7 +32,10 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG")
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = [
+    os.getenv("REMOTE_DOMAIN"),
+    os.getenv("REMOTE_DOMAIN_API")
+]
 
 DJANGO_APPS = [
     "django.contrib.admin",
