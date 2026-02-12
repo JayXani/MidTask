@@ -9,7 +9,8 @@ def normalize_payload(payload: dict):
         data.append(AlertEntity(
             id=payload.get("id", [None])[i] if i < len(payload.get("id", "")) else None,
             date=payload.get("date", [None])[i] if i < len(payload.get("date", "")) else None,
-            repeat=payload.get("repeat", [None])[i] if i < len(payload.get("repeat", "")) else None
+            repeat=payload.get("repeat", [None])[i] if i < len(payload.get("repeat", "")) else None,
+            name=payload.get("name", [None])[i] if i < len(payload.get("name", "")) else None
         ))
 
     return data

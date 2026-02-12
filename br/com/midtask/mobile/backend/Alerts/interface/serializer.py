@@ -13,6 +13,9 @@ class AlertInputSerializer(serializers.Serializer):
         required=True,
         allow_null=False
     )
+    name=serializers.CharField(
+        required=True
+    )
 class AlertInputUpdateSerializer(serializers.Serializer):
     id=serializers.UUIDField(
         required=False,
@@ -25,6 +28,9 @@ class AlertInputUpdateSerializer(serializers.Serializer):
     repeat=serializers.CharField(
         required=False,
         allow_null=False
+    )
+    name=serializers.CharField(
+        required=False
     )
 
 class AlertsListInputSerializer(serializers.Serializer):
@@ -40,9 +46,14 @@ class AlertsListInputSerializer(serializers.Serializer):
         child=serializers.DateField(format="%Y-%m-%d"),
         required=False
     )
+    name=serializers.ListField(
+        child=serializers.CharField(),
+        required=False
+    )
 
 
 class OutputSerializer(serializers.Serializer):
     id=serializers.UUIDField()
     date=serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
     repeat=serializers.CharField()
+    name=serializers.CharField()

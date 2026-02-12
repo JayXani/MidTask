@@ -7,3 +7,4 @@ class AlertEntity():
     id: str | None = field(default_factory=uuid4)
     date: datetime | None = None
     repeat: str | None = None
+    name: str | None = None

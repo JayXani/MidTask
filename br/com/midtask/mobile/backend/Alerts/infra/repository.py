@@ -10,6 +10,7 @@ class AlertsRepository():
             ale_id=alert_entity.id,
             ale_repeat=alert_entity.repeat,
             ale_date=alert_entity.date,
+            ale_name=alert_entity.name,
             fk_ale_use_id=User.objects.get(use_id=user_id)
         )
 
@@ -17,6 +18,7 @@ class AlertsRepository():
             id=alert_created.ale_id,
             date=alert_created.ale_date,
             repeat=alert_created.ale_repeat,
+            name=alert_created.ale_name,
         )
     
     def findall(self, alerts_entities: list[AlertEntity], user_id: str):
@@ -24,6 +26,7 @@ class AlertsRepository():
         for alert in alerts_entities:
             query |= Q(ale_id=alert.id) | Q(ale_date=alert.date) | Q(ale_repeat=alert.repeat)
             query |= Q(ale_date__date=alert.date)
+            query |= Q(ale_name__in=alert.name)
 
         alerts_filtered = Alerts.objects.filter(
             query,
@@ -34,7 +37,8 @@ class AlertsRepository():
             AlertEntity(
                 id=alert.ale_id,
                 date=alert.ale_date,
-                repeat=alert.ale_repeat
+                repeat=alert.ale_repeat,
+                name=alert.ale_name
             ) for alert in alerts_filtered
         ]
     
@@ -48,13 +52,15 @@ class AlertsRepository():
             AlertEntity(
                 id=alert_founded.ale_id,
                 date=alert_founded.ale_date,
-                repeat=alert_founded.ale_repeat
+                repeat=alert_founded.ale_repeat,
+                name=alert_founded.ale_name
             )
         ]
     
     def update(self, alert_entity: AlertEntity, user_id: str):
         if alert_entity.date: self.dict_keys["ale_date"] = alert_entity.date
         if alert_entity.repeat: self.dict_keys["ale_repeat"] = alert_entity.repeat
+        if alert_entity.name: self.dict_keys["ale_name"] = alert_entity.name
         
         Alerts.objects.filter(
             ale_id=alert_entity.id,
@@ -69,7 +75,8 @@ class AlertsRepository():
             AlertEntity(
                 id=alert_founded.ale_id,
                 date=alert_founded.ale_date,
-                repeat=alert_founded.ale_repeat
+                repeat=alert_founded.ale_repeat,
+                name=alert_founded.ale_name
             )
         ]
     

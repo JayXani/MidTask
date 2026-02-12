@@ -107,7 +107,20 @@ WSGI_APPLICATION = "setup.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {"default": db_url(os.getenv("DATABASE_URL"))}
+DATABASES = {
+    'default': {
+        'ENGINE': os.getenv("DATABASE_ENGINE"),
+        'NAME': os.getenv("DATABASE_NAME"),
+        'USER':  os.getenv("DATABASE_USER"),
+        'PASSWORD':  os.getenv("DATABASE_PASSWORD"),
+        'HOST':  os.getenv("DATABASE_HOST"),
+        'PORT':  os.getenv("DATABASE_PORT"),
+        'OPTIONS': {
+            'sslmode':  os.getenv("DATABASE_SSL"),
+            'options': '-c search_path=public' # Isso força criar as tabelas no schema public
+        },
+    }
+}
 
 #Emails
 EMAIL_BACKEND = os.getenv("EMAIL_BACKEND")
