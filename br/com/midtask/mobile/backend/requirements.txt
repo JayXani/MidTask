@@ -12,6 +12,7 @@ cron_descriptor==2.0.6
 dj-database-url==3.0.1
 Django==5.2.8
 django-celery-beat==2.8.1
+django-crontab==0.7.1
 django-timezone-field==7.2.1
 djangorestframework==3.16.1
 djangorestframework_simplejwt==5.5.1
