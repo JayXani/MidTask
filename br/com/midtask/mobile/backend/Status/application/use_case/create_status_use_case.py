@@ -16,7 +16,7 @@ class CreateStatusUseCase:
             )
         
         status_exists_in_db = self.repository.findall([StatusEntity(name=n) for n in exists_status_default], user_id)
-        if(not len(status_exists_in_db)): status["status"].extend(status_default)
+        if(len(status_exists_in_db) == 0): status["status"].extend(status_default)
 
         status_entities = [StatusEntity(name=s) for s in status.get("status", [])]
 
