@@ -66,7 +66,7 @@ class TaskView(APIView):
             input_serializer.is_valid(raise_exception=True)
 
             use_case = DeleteTaskUseCase()
-            tasks_deleted = use_case.execute(input_serializer.validated_data, request.user.use_id)
+            tasks_deleted = use_case.execute(input_serializer.validated_data, request.user)
             if(not len(tasks_deleted) or (len(tasks_deleted) and tasks_deleted[0] <= 0)): return Response(format_response(
                 success=True,
                 message="Success ! You don't anyone register !",
@@ -91,7 +91,7 @@ class TaskView(APIView):
             input_serializer.is_valid(raise_exception=True)
 
             use_case = UpdateTaskUseCase()
-            task_updated = use_case.execute(input_serializer.validated_data, id, request.user.use_id)
+            task_updated = use_case.execute(input_serializer.validated_data, id, request.user.use_id, request.user.use_email)
 
             return Response(format_response(
                 success=True,

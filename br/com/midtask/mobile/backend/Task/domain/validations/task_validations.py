@@ -1,5 +1,7 @@
 import re
+from datetime import datetime
 from ..entities import TaskEntity
+
 from Alerts.infra.repository import AlertsRepository
 from Alerts.domain.entities import AlertEntity
 
@@ -12,6 +14,7 @@ from LinksAssociates.domain.entities import LinksEntity
 from Status.infra.repository import StatusRepository
 from Status.domain.entities import StatusEntity
 
+from ...infra.repository import TaskRepository
 
 def alerts_exists(alerts_id: list[str], user_id: str):
     alert_repository =  AlertsRepository()
@@ -56,6 +59,29 @@ def links_exists(links_id: list[str], user_id: str):
 def date_valid(date: str):
     regex = r"^(\d{4})-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01]) ([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$"
     return re.match(regex, date)
+
+def task_already_conclude(task_entity: TaskEntity, user_id: str, task_status: str):
+    task_repository = TaskRepository()
+    task_founded = task_repository.findall([TaskEntity(id=task_entity.id)], user_id)
+
+    if(not len(task_founded)): raise Exception("Error ! task not found.")
+    status = task_founded[0].status
+    
+    if(len(status)):
+        status_is_conclude = status[0].name == task_status
+        if(status_is_conclude): raise Exception("Attention ! This task already conclude, you don't conclude again.")
+
+
+def update_fields_per_status(task_entity: TaskEntity, user_id: str):
+    if(task_entity.status):
+        status_repository = StatusRepository()
+        status_founded = status_repository.findall([StatusEntity(id=task_entity.status[0])], user_id)
+
+        if(not len(status_founded)): raise Exception("Error ! This status id not exists")
+        status_name = status_founded[0].name
+        if(status_name == "CONCLUDE"): 
+            task_already_conclude(task_entity, user_id, status_name)
+            task_entity.conclude_at = datetime.now()
 
 
 def normalize_payload(payload: dict):

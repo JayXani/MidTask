@@ -1,7 +1,7 @@
 from uuid import uuid4
 from ...infra.repository import UserRepository
 from ...Domain.entities import UserEntity
-from Notifications.infra.jobs.send_email import send_welcome_email_task
+from Notifications.infra.jobs.send_email import send_emails
 
 class CreateUserUseCase:
     def __init__(self):
@@ -15,7 +15,7 @@ class CreateUserUseCase:
 
         user_created = self.user_repository.save(user)
         if user_created:
-            send_welcome_email_task.delay(
+            send_emails.delay(
                 "emails/welcome.html",
                 {
                     "name": user_created.name,

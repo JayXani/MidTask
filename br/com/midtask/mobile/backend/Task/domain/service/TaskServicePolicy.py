@@ -4,7 +4,8 @@ from ...domain.validations.task_validations import (
     labels_exists,
     links_exists,
     status_exists,
-    date_valid
+    date_valid,
+    update_fields_per_status
 )
 class TaskServicePolicy():
     def create_task_validation(self, task_entity: TaskEntity, user_id: str):
@@ -19,3 +20,5 @@ class TaskServicePolicy():
                 raise Exception("Recurrence is invalid, you should sended: week, null, month or day(Only dates: 2026-01-01 12:00:00)")
 
         
+    def update_task_validation(self, task_entity: TaskEntity, user_id: str):
+        if(len(task_entity.status)): update_fields_per_status(task_entity, user_id)

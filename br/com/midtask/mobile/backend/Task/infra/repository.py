@@ -124,7 +124,7 @@ class TaskRepository():
         if task_entity.recurrence: self.dict_keys["tsk_recurrence"] = task_entity.recurrence
         if task_entity.recurrence_end_in: self.dict_keys["tsk_recurrence_end_in"] = task_entity.recurrence_end_in
         if task_entity.updated_at: self.dict_keys["updated_at"] = task_entity.updated_at
-
+        if len(task_entity.status): self.dict_keys["fk_tsk_sta_id"] = str(task_entity.status[0])
         self.dict_keys["updated_at"] = task_entity.updated_at
 
         if(isinstance(task_entity.alerts, list)):
