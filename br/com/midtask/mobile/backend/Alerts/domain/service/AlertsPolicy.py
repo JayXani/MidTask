@@ -33,7 +33,7 @@ def validate_dates_repeat(alert_entity: AlertEntity):
     ]
     date_is_valid = date_valid(repeat)
     if(repeat not in alerts_repeat and not date_is_valid): raise Exception(
-        f"Repeat date invalid, you can send: {",".join([r.upper() for r in alerts_repeat])} and DATE (EX: 2025-12-29 12:00:12)"
+        f"Repeat date invalid, you can send: {",".join([r.upper() for r in alerts_repeat])} or DATE (EX: 2025-12-29 12:00:12)"
     )
 
     if(date_is_valid):

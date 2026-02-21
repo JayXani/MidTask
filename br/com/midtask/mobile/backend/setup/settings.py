@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 from dotenv import load_dotenv
+from celery.schedules import crontab
 import os
 from datetime import timedelta
 
@@ -36,7 +37,12 @@ ALLOWED_HOSTS = [
     os.getenv("REMOTE_DOMAIN"),
     os.getenv("REMOTE_DOMAIN_API")
 ]
-
+CELERY_BEAT_SCHEDULE = {
+    'execute_alerts_one_hour': {
+        'task': 'Task.tasks.send_alerts',
+        'schedule': crontab(minute='*/1'),
+    },
+}
 DJANGO_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -44,7 +50,9 @@ DJANGO_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "django_crontab"
+    "django_crontab",
+    'django_celery_beat',
+    'django_celery_results'
 ]  # (Danilo) - Apps of the django
 THIRD_PARTY_APPS = [
     "rest_framework"

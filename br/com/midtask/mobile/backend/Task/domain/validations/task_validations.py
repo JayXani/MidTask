@@ -22,7 +22,6 @@ def alerts_exists(alerts_id: list[str], user_id: str):
         [AlertEntity(id=v) for v in alerts_id],
         user_id
     )
-    
     if(len(alerts_exists) != len(alerts_id)): raise Exception("You sended the alerts id invalid ! Verify the ids.")
     if(not len(alerts_exists)): raise Exception("Alerts not found !")
 

@@ -24,15 +24,17 @@ class AlertsRepository():
     def findall(self, alerts_entities: list[AlertEntity], user_id: str):
         query = Q()
         for alert in alerts_entities:
-            query |= Q(ale_id=alert.id) | Q(ale_date=alert.date) | Q(ale_repeat=alert.repeat)
-            query |= Q(ale_date__date=alert.date)
-            query |= Q(ale_name__in=alert.name)
+            if alert.id: query |= Q(ale_id=alert.id)
+            if alert.date: query |= Q(ale_date=alert.date)
+            if alert.repeat: query |= Q(ale_repeat=alert.repeat)
+            if alert.date: query |= Q(ale_date__date=alert.date)
+            if alert.name: query |= Q(ale_name__in=alert.name)
+   
 
         alerts_filtered = Alerts.objects.filter(
             query,
             fk_ale_use_id=user_id
         )
-        
         return [
             AlertEntity(
                 id=alert.ale_id,

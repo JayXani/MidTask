@@ -7,7 +7,10 @@ from Alerts.models import Alerts
 from Alerts.domain.entities import AlertEntity
 from Labels.models import Labels
 from LinksAssociates.models import LinksAssociates
-from django.db.models import Q
+from django.db.models import Q, Case, When, F, DateTimeField
+from datetime import timedelta
+from dateutil.relativedelta import relativedelta
+
 class TaskRepository():
     dict_keys = {}
 
@@ -177,34 +180,58 @@ class TaskRepository():
         if len(links_to_add): task_founded.fk_tsk_asc_id.add(*LinksAssociates.objects.filter(asc_id__in=links_to_add, fk_asc_use_id=user_id))
 
     
-    def findall_tasks_to_expired(self, timezone_hours: str = "-3"):
-        operator = "-" if "-" in timezone_hours else "+"
-        timezone_cleaned = int(timezone_hours.replace("+", "").replace("-", "").strip())
-        
-        query = f""" 
+    def findall_tasks_to_expired(self):
+
+        #Query para buscar todas as tarefas que estao com os alertas para vencer.
+        query = """ 
             SELECT 
-                tsk.tsk_id, 
+                tsk.tsk_id,
+                tsk.tsk_description,
+                tsk.tsk_conclude_at,
+                tsk.created_at,
+                tsk.tsk_title,
                 ale.ale_date,
-                ale.ale_id
+                ale.ale_id,
+                use.use_email,
+                use.use_name,
+                use.use_id
             FROM "Task_task" AS tsk
             INNER JOIN "Task_task_fk_tsk_ale_id" AS ts_ale ON ts_ale.task_id = tsk.tsk_id
             INNER JOIN "Alerts_alerts" AS ale ON ale.ale_id = ts_ale.alerts_id
             INNER JOIN "Status_status" AS sta ON sta.sta_id = tsk.fk_tsk_sta_id_id
+            INNER JOIN "User_user" AS use ON use.use_id = tsk.fk_tsk_use_id_id
             WHERE 
                 sta.sta_name != 'CONCLUDE' AND
-                ale.ale_date >= date_trunc('day', now() {operator} interval '{timezone_cleaned} hours') + interval '1 day'
-                AND ale.ale_date <  date_trunc('day', now() {operator} interval '{timezone_cleaned}hours') + interval '2 day';
+                ale.ale_date >= date_trunc('day', now() - interval '3 hours') + interval '1 day'
+                AND ale.ale_date <  date_trunc('day', now() - interval '3 hours') + interval '2 day';
         """
 
         tickets_to_expired = Task.objects.raw(query)
 
-        return [
-            TaskEntity(
-                id=tsk.tsk_id,
-                alerts= [AlertEntity(
-                    id=x.ale_id,
-                    date=x.ale_date,
-                    repeat=x.ale_repeat
-                ) for x in tsk.fk_tsk_ale_id.all()],
-            ) for tsk in tickets_to_expired
-        ]
+        return tickets_to_expired
+    
+
+
+    def update_task_alerts(self, alert_ids: list[str]):
+
+        alerts_updated = (
+            Alerts.objects
+            .filter(
+                ale_id__in=alert_ids
+            )
+            .update(
+                #F = Pega o registro da tabela sem precisar de query
+                ale_date=Case(
+                    When(ale_repeat="DAY", then=F("ale_date") + timedelta(days=1)),
+                    When(ale_repeat="WEEK", then=F("ale_date") + timedelta(weeks=1)),
+                    When(ale_repeat="MONTH", then=F("ale_date") + timedelta(days=30)),
+                    When(ale_repeat="TRIMESTER", then=F("ale_date") + timedelta(days=90)),
+                    When(ale_repeat="SEMESTER", then=F("ale_date") + timedelta(days=180)),
+                    When(ale_repeat="YEAR", then=F("ale_date") + timedelta(days=365)),
+                    default=F("ale_date"),
+                    output_field=DateTimeField(),
+                )
+            )
+        )
+
+        return alerts_updated

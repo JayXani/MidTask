@@ -40,7 +40,8 @@ class LabelRepository():
 
         # A filtragem dos campos nós podemos usar o campo + __contains | __in (para array) etc
         for label in labels_entities:
-            query |= Q(lab_id=label.id) | Q(lab_name__contains=label.title or "")
+            if label.id: query  |=  Q(lab_id=label.id)
+            if label.title: query |= Q(lab_name__contains=label.title or "")
 
         labels_founded = Labels.objects.filter(
             query,
