@@ -40,7 +40,7 @@ ALLOWED_HOSTS = [
 CELERY_BEAT_SCHEDULE = {
     'execute_alerts_one_hour': {
         'task': 'Task.tasks.send_alerts',
-        'schedule': crontab(minute='*/1'),
+        'schedule': crontab(minute='*/0'),
     },
 }
 DJANGO_APPS = [
