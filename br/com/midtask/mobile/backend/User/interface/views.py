@@ -1,6 +1,7 @@
 from ..application.use_cases.create_user_use_case import CreateUserUseCase
 from ..application.use_cases.update_user_use_case import UpdateUserUseCase
 from ..application.use_cases.get_user_use_case import GetUserUseCase
+from ..application.use_cases.google_oauth_use_case import GoogleAuthUseCase
 from ..infra.messages import format_response
 from rest_framework_simplejwt.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -12,7 +13,8 @@ from rest_framework.views import APIView
 from .serializers import (
     UserInputSerializer,
     UserUpdateSerializer,
-    UserOutputSerializer
+    UserOutputSerializer,
+    GoogleOauthSerializer
 )
 
 class UserViewer(APIView):
@@ -117,5 +119,45 @@ class Authentication(TokenObtainPairView):
                 format_response(
                     success=False,
                     err=e
+                ),
+                status=400
+            )
+        
+
+
+class GoogleAuthenticationView(APIView):
+    def post(self, request: Request):
+        try:
+            serializer = GoogleOauthSerializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+
+            data_validated = serializer.validated_data
+            use_case = GoogleAuthUseCase()
+            user_token = use_case.execute(data_validated)
+            
+            return Response(
+                format_response(
+                    success=True,
+                    message="Success ! Token provided.",
+                    data=user_token
                 )
+            )
+        except AuthenticationFailed as auth_err:
+            return Response(
+                format_response(
+                    success=False,
+                    message="Authentication failed!",
+                    err=e
+                ),
+                status=401
+            )
+
+        except Exception as e:
+            print(e)
+            return Response(
+                format_response(
+                    success=False,
+                    err=e
+                ),
+                status=400
             )

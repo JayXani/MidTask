@@ -1,4 +1,6 @@
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
+from ..models import User
 from enum import Enum
 
 class Status(Enum):
@@ -15,28 +17,23 @@ class UserInputSerializer(serializers.Serializer):
     email = serializers.EmailField(
         required=True
     )
-    password = serializers.CharField(required=False)
+    password = serializers.CharField(required=True)
+    avatar=serializers.CharField(required=False)
     phone = serializers.CharField()
-    login_type = serializers.CharField()
     ip_address = serializers.IPAddressField()
     created_at = serializers.DateField(required=False)
     updated_at = serializers.DateField(required=False)
-    
-    def validate(self, data):
-        dict_data = dict(data)
-        login_type = dict_data.get("login_type")
-        if(login_type != "google" and not dict_data.get("password")):
-            raise serializers.ValidationError({
-                "password": ["Password is required !"]
-            })
-        
-        return data
 
     def to_internal_value(self, data): # Aqui que realizo a trativa dos dados para converter em objetos serializados
         validated = super().to_internal_value(data)
         validated["status"] = Status[validated["status"]]  # transforma string → enum
         return validated
-    
+
+
+class GoogleOauthSerializer(serializers.Serializer):
+    use_email = serializers.EmailField(required=True)
+    google_id=serializers.CharField(required=True)
+    ip_address=serializers.CharField(required=True)
 
 # Recomendado ter serializers diferente para cada tipo de método, para nao gerar bugs
 class UserUpdateSerializer(serializers.Serializer):
@@ -45,6 +42,7 @@ class UserUpdateSerializer(serializers.Serializer):
         choices=[s.name for s in Status],
         required=False
     )
+    avatar=serializers.CharField(required=False)
     phone = serializers.CharField(required=False)
     password = serializers.CharField(required=False)
     def validate(self, data):
@@ -67,6 +65,7 @@ class UserOutputSerializer(serializers.Serializer):
     status = serializers.CharField()
     email = serializers.EmailField()
     phone = serializers.CharField(allow_null=True)
+    avatar=serializers.CharField()
     login_type = serializers.CharField()
     ip_address = serializers.IPAddressField()
     created_at = serializers.DateTimeField()

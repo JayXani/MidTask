@@ -1,12 +1,13 @@
 from ..Domain.entities import UserEntity
 from ..models import User
-
+from django.db.models import Q
 
 class UserRepository:
     def save(self, user: UserEntity) -> UserEntity:
         user_created = User.objects.create_user(
             email=user.email,
             password=user.password,
+            use_google_id=user.google_id,
             use_id=user.id,
             use_name=user.name,
             use_status=user.status.value,
@@ -14,20 +15,16 @@ class UserRepository:
             use_login_type=user.login_type,
             use_ip_address=user.ip_address,
         )
-        return UserEntity(
-            id=user_created.use_id,
-            name=user_created.use_name,
-            status=user_created.use_status,
-            email=user_created.use_email,
-            phone=user_created.use_phone,
-            login_type=user_created.use_login_type,
-            ip_address=user_created.use_ip_address,
-            created_at=user_created.created_at,
-            updated_at=user_created.updated_at,
-        )
+        return user_created
     
     def find(self, user: UserEntity):
-        users_founded = User.objects.get(use_id=user.id)
+        #Na hora da busca, o tipo de login tem que ser único para que a query filtre de acordo com o tipo de login
+
+        users_founded = User.objects.filter(
+            use_email=user.email
+        ).first()
+        print(users_founded)
+        if not users_founded: return None
 
         return UserEntity(
             id=users_founded.use_id,
@@ -47,9 +44,6 @@ class UserRepository:
         
         if user.email is not None:
             data_to_update["use_email"] = user.email
-
-        if user.password is not None:
-            data_to_update["password"] = user.password
 
         if user.name is not None:
             data_to_update["use_name"] = user.name
@@ -82,4 +76,21 @@ class UserRepository:
             created_at=user_db.created_at,
             updated_at=user_db.updated_at,
         )
+    
+    #Metodo responsavel por vincular um usuário a um existente
+    def assign_google_user(self, user: UserEntity):
+        data_to_update = {
+            "use_email": user.email,
+            "use_google_id": user.google_id,
+            "updated_at": user.updated_at,
+            "use_login_type": "full" #Significa que ele pode se logar com basic ou google
+        }
+
+        User.objects.filter(
+            use_email=user.email
+        ).update(**data_to_update)
+
+        # Busca o usuário atualizado
+        user_db = User.objects.get(use_email=user.email)
+        return user_db
 

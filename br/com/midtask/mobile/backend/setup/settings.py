@@ -17,8 +17,6 @@ import os
 from datetime import timedelta
 
 load_dotenv()
-from dj_database_url import parse as db_url
-
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY")
-
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG")
 

@@ -14,7 +14,7 @@ class UserManager(BaseUserManager):
     def create_user(self, email: str, password: str, **extra_fields): # Método para criar o user padrao
         email = self.normalize_email(email)
         user = self.model(use_email=email, **extra_fields)
-        user.set_password(password) # Já cria a senha com o hash
+        user.set_password(password) # Já cria a senha com o hash (nativo)
         user.save(using=self.db)
 
         return user
@@ -32,12 +32,13 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     use_id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     use_name = models.CharField(max_length=150)
+    use_avatar=models.CharField(default="")
     use_status = models.CharField(choices=Status, max_length=10)
     use_email = models.EmailField(unique=True)
     use_phone = models.CharField(max_length=20, null=True)
     use_login_type = models.CharField(max_length=30)
     use_ip_address = models.GenericIPAddressField()
-   
+    use_google_id=models.CharField(unique=True, null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     

@@ -6,8 +6,10 @@ from datetime import datetime
 class UserEntity:
     id: str | None = None # Precisamos da tipagem
     name: str | None = None
+    google_id:str | None = None
     status: str | None = None
     email: str | None = None
+    avatar: str | None = None
     phone: str | None = None
     login_type: str | None = None
     ip_address: str | None = None
