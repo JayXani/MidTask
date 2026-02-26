@@ -41,6 +41,11 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': crontab(minute=0),
     },
 }
+
+CSRF_TRUSTED_ORIGINS = [ #Protecao apenas para o meu dominio
+    "https://nalafortezza.com",
+]
+
 DJANGO_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
