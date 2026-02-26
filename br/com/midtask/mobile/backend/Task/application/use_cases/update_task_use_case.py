@@ -26,6 +26,7 @@ class UpdateTaskUseCase():
                     {
                         "subject": "Parabéns ! Você acaba de concluir uma tarefa.",
                         "task_name": task_unique.title,
+                        "background": task_unique.background or "#22c55e",
                         "due_date": task_unique.expected_conclude_in.strftime("%d/%m/%Y") if task_unique.expected_conclude_in else "",
                         "completed_at": task_unique.conclude_at.strftime("%d/%m/%Y") if task_unique.conclude_at else "",
                         "task_description": task_unique.description

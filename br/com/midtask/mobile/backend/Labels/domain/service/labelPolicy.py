@@ -9,6 +9,7 @@ def validate_user_exists(user_id: str, user_repository: UserRepository, ):
             id=user_id
         )
     )
+    print(user_exists)
     if(not user_exists): raise Exception("User not exists !")
 
 def policy_to_create(

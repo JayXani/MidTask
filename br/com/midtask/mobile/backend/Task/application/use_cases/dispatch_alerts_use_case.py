@@ -19,6 +19,7 @@ class DispatchAlertsUseCase():
                             "subject": "OPA...Suas tarefas estão expirando",
                             "task_description": task.tsk_description,
                             "due_date": task.tsk_conclude_at,
+                            "background": task.background or "#f59e0b",
                             "created_at": task.created_at,
                             "task_name": task.tsk_title
                         },

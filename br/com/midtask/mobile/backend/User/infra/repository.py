@@ -1,19 +1,20 @@
 from ..Domain.entities import UserEntity
 from ..models import User
 from django.db.models import Q
-
 class UserRepository:
-    def save(self, user: UserEntity) -> UserEntity:
+    def save(self, user: UserEntity):
         user_created = User.objects.create_user(
             email=user.email,
             password=user.password,
             use_google_id=user.google_id,
             use_id=user.id,
             use_name=user.name,
-            use_status=user.status.value,
+            use_status=user.status.value or "", #Default caso nao exista status
             use_phone=user.phone,
             use_login_type=user.login_type,
             use_ip_address=user.ip_address,
+            created_at=user.created_at,
+            updated_at=user.updated_at
         )
         return user_created
     
@@ -21,9 +22,8 @@ class UserRepository:
         #Na hora da busca, o tipo de login tem que ser único para que a query filtre de acordo com o tipo de login
 
         users_founded = User.objects.filter(
-            use_email=user.email
+            use_id=user.id
         ).first()
-        print(users_founded)
         if not users_founded: return None
 
         return UserEntity(
@@ -38,6 +38,14 @@ class UserRepository:
             updated_at=users_founded.updated_at,
         )
     
+    def find_user_filtered(self, user: UserEntity):
+        users_founded = User.objects.get(
+            use_email=user.email
+        )
+        if not users_founded: return None
+
+        return users_founded
+
     def update(self, user: UserEntity):
         data_to_update = {}
         data_to_update["updated_at"] = user.updated_at
@@ -73,7 +81,6 @@ class UserRepository:
             phone=user_db.use_phone,
             login_type=user_db.use_login_type,
             ip_address=user_db.use_ip_address,
-            created_at=user_db.created_at,
             updated_at=user_db.updated_at,
         )
     
@@ -85,6 +92,8 @@ class UserRepository:
             "updated_at": user.updated_at,
             "use_login_type": "full" #Significa que ele pode se logar com basic ou google
         }
+
+        if user.created_at: data_to_update["created_at"] = user.created_at
 
         User.objects.filter(
             use_email=user.email

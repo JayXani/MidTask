@@ -29,7 +29,8 @@ class UserManager(BaseUserManager):
 #Para o auth funcionar, eu preciso instanciar as classes nativas do django que já fazem isso
 class User(AbstractBaseUser, PermissionsMixin):
     username = None  # REMOVE username padrão, pois nao posso user ele + email login
-
+    last_login = None # REMOVE o last_login, pois nao usamos ele
+    
     use_id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     use_name = models.CharField(max_length=150)
     use_avatar=models.CharField(default="")

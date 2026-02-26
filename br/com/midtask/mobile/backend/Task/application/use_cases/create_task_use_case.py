@@ -24,7 +24,8 @@ class CreateTaskUseCase():
                     "subject": "Nova task criada !",
                     "task_name": new_task.title,
                     "created_at": new_task.created_at.strftime("%d/%m/%Y"),
-                    "task_description": new_task.description, 
+                    "task_description": new_task.description,
+                    "background": new_task.background or "#4A6CF7",
                     "due_date": new_task.expected_conclude_in.strftime("%d/%m/%Y") if new_task.expected_conclude_in else "",
                 },
                 user.email

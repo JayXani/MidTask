@@ -201,9 +201,10 @@ class TaskRepository():
             INNER JOIN "Status_status" AS sta ON sta.sta_id = tsk.fk_tsk_sta_id_id
             INNER JOIN "User_user" AS use ON use.use_id = tsk.fk_tsk_use_id_id
             WHERE 
-                sta.sta_name != 'CONCLUDE' AND
-                ale.ale_date >= date_trunc('day', now() - interval '3 hours') + interval '1 day'
-                AND ale.ale_date <  date_trunc('day', now() - interval '3 hours') + interval '2 day';
+                (sta.sta_name != 'CONCLUDE') AND
+                (ale.ale_date >= date_trunc('day', now() - interval '3 hours') + interval '1 day') AND
+                (ale.ale_date <  date_trunc('day', now() - interval '3 hours') + interval '2 day') AND
+                (now() AT TIME ZONE 'America/Sao_Paulo')::time >= ale.ale_date::time;
         """
 
         tickets_to_expired = Task.objects.raw(query)

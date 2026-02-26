@@ -10,6 +10,7 @@ class CreateUserUseCase:
     def execute(self, data: dict) -> UserEntity:
         user = UserEntity(
             id=uuid4(),
+            login_type="basic", #Todo login realizado pela API de user, deve ser do tipo basic
             **data
         )
 

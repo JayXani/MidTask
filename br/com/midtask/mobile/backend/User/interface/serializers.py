@@ -1,12 +1,5 @@
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
-from ..models import User
-from enum import Enum
-
-class Status(Enum):
-    ACTIVATE = "A"
-    BLOCKED = "B"
-    DEACTIVATE = "D"
+from ..Domain.enum.StatusEnum import Status
 
 
 class UserInputSerializer(serializers.Serializer):
