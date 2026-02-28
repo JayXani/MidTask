@@ -43,7 +43,7 @@ CELERY_BEAT_SCHEDULE = {
 }
 
 CSRF_TRUSTED_ORIGINS = [ #Protecao apenas para o meu dominio
-    "https://nalafortezza.com",
+    "https://midtask.onrender.com",
 ]
 
 DJANGO_APPS = [
