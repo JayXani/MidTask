@@ -42,9 +42,18 @@ CELERY_BEAT_SCHEDULE = {
     },
 }
 
-CSRF_TRUSTED_ORIGINS = [ #Protecao apenas para o meu dominio
-    "https://midtask.onrender.com",
+CSRF_TRUSTED_ORIGINS = [ #Protecao apenas para o meu dominio (SOMENTE HTTPS)
+    "https://midtask.onrender.com", 
 ]
+
+#Configuracao do CORS para liberacao da API
+CORS_ALLOWED_ORIGINS = [
+    "https://midtask.onrender.com",
+    "http://localhost:8000",
+    "http://localhost:8001",
+    "http://localhost:5173",  
+]
+
 
 DJANGO_APPS = [
     "django.contrib.admin",
@@ -58,7 +67,8 @@ DJANGO_APPS = [
     'django_celery_results'
 ]  # (Danilo) - Apps of the django
 THIRD_PARTY_APPS = [
-    "rest_framework"
+    "rest_framework",
+    "corsheaders"
 ]  # (Danilo) - Apps de terceiros
 LOCAL_APPS = [
     "User.apps.UserConfig",
@@ -79,6 +89,7 @@ CRONJOBS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",  # CORS
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
