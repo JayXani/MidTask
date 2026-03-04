@@ -40,21 +40,14 @@ CELERY_BEAT_SCHEDULE = {
 
 ALLOWED_HOSTS = [
     "midtask.onrender.com",
-    "192.168.0.15",
     "127.0.0.1",
-    "localhost",
-    "191.178.235.240",
-    "capacitor://localhost",
-    "ionic://localhost",
-    "file://"
+    "localhost"
 ]
 
 CORS_ALLOWED_ORIGINS = [
     "https://midtask.onrender.com",
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-    "http://192.168.0.15:5173",
-    "http://191.178.235.240:5173",
+    "http://localhost:5173", #Vue localhost
+    "http://127.0.0.1:5173" #Vue localhost
 ]
 
 CSRF_TRUSTED_ORIGINS = [
