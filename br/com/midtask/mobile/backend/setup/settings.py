@@ -31,13 +31,6 @@ GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG")
 
-ALLOWED_HOSTS = [
-    "https://midtask.onrender.com", 
-    "http://192.168.0.15:5173",
-    "http://127.0.0.1:5173", 
-    "http://localhost:5173",
-    "http://191.178.235.240:5173"
-]
 CELERY_BEAT_SCHEDULE = {
     'execute_alerts_one_hour': {
         'task': 'Task.tasks.send_alerts',
@@ -45,24 +38,32 @@ CELERY_BEAT_SCHEDULE = {
     },
 }
 
-CSRF_TRUSTED_ORIGINS = [ #Protecao apenas para o meu dominio (SOMENTE HTTPS)
-    "https://midtask.onrender.com", 
-    "http://192.168.0.15:5173",
-    "http://127.0.0.1:5173", 
-    "http://localhost:5173",
-    "http://191.178.235.240:5173"
+ALLOWED_HOSTS = [
+    "midtask.onrender.com",
+    "192.168.0.15",
+    "127.0.0.1",
+    "localhost",
+    "191.178.235.240",
 ]
 
-#Configuracao do CORS para liberacao da API
 CORS_ALLOWED_ORIGINS = [
     "https://midtask.onrender.com",
-    "http://localhost:8000",
-    "http://localhost:8001",
-    "http://localhost:5173", 
-     "http://127.0.0.1:5173", 
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
     "http://192.168.0.15:5173",
     "http://191.178.235.240:5173",
 ]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://midtask.onrender.com",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://192.168.0.15:5173",
+    "http://191.178.235.240:5173",
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
 
 
 DJANGO_APPS = [
@@ -99,9 +100,9 @@ CRONJOBS = [
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",  # CORS
+    "django.middleware.common.CommonMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
@@ -166,6 +167,7 @@ DEFAULT_FROM_EMAIL =os.getenv("DEFAULT_FROM_EMAIL")
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 AUTH_USER_MODEL ="User.User"
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
