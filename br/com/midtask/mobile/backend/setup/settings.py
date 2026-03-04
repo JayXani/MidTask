@@ -32,8 +32,11 @@ GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 DEBUG = os.getenv("DEBUG")
 
 ALLOWED_HOSTS = [
-    os.getenv("REMOTE_DOMAIN"),
-    os.getenv("REMOTE_DOMAIN_API")
+    "https://midtask.onrender.com", 
+    "http://192.168.0.15:5173",
+    "http://127.0.0.1:5173", 
+    "http://localhost:5173",
+    "http://191.178.235.240:5173"
 ]
 CELERY_BEAT_SCHEDULE = {
     'execute_alerts_one_hour': {
@@ -44,7 +47,10 @@ CELERY_BEAT_SCHEDULE = {
 
 CSRF_TRUSTED_ORIGINS = [ #Protecao apenas para o meu dominio (SOMENTE HTTPS)
     "https://midtask.onrender.com", 
-    "http://192.168.0.15:5173"
+    "http://192.168.0.15:5173",
+    "http://127.0.0.1:5173", 
+    "http://localhost:5173",
+    "http://191.178.235.240:5173"
 ]
 
 #Configuracao do CORS para liberacao da API
@@ -55,6 +61,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173", 
      "http://127.0.0.1:5173", 
     "http://192.168.0.15:5173",
+    "http://191.178.235.240:5173",
 ]
 
 
