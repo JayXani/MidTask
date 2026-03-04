@@ -44,6 +44,9 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
     "191.178.235.240",
+    "capacitor://localhost",
+    "ionic://localhost",
+    "file://"
 ]
 
 CORS_ALLOWED_ORIGINS = [
@@ -63,8 +66,6 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 CORS_ALLOW_CREDENTIALS = True
-
-
 
 DJANGO_APPS = [
     "django.contrib.auth",
