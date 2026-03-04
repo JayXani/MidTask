@@ -44,6 +44,7 @@ CELERY_BEAT_SCHEDULE = {
 
 CSRF_TRUSTED_ORIGINS = [ #Protecao apenas para o meu dominio (SOMENTE HTTPS)
     "https://midtask.onrender.com", 
+    "http://192.168.0.15:5173"
 ]
 
 #Configuracao do CORS para liberacao da API
@@ -51,7 +52,8 @@ CORS_ALLOWED_ORIGINS = [
     "https://midtask.onrender.com",
     "http://localhost:8000",
     "http://localhost:8001",
-    "http://localhost:5173",  
+    "http://localhost:5173", 
+     "http://127.0.0.1:5173", 
     "http://192.168.0.15:5173",
 ]
 
