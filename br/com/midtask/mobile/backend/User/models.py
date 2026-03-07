@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from uuid import uuid4
-from django.conf import settings
 
 
 # Create your models here.
@@ -40,7 +39,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     use_login_type = models.CharField(max_length=30)
     use_ip_address = models.GenericIPAddressField()
     use_google_id=models.CharField(unique=True, null=True)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True) #É necessário ter, pois o JWT valida esse campo.
     is_staff = models.BooleanField(default=False)
     
     created_at = models.DateTimeField(auto_now_add=True)
@@ -54,18 +53,3 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.use_email # Tem que ser o mesmo campo de email que está nos atributos
-    
-
-
-# Create your models here.
-class ChangeLog(models.Model):
-    log_id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
-    log_type = models.CharField(max_length=30, editable=False)
-    log_date = models.DateField(editable=False, auto_now_add=True)
-    log_endpoint = models.CharField(max_length=30, editable=False)
-    log_description = models.TextField(editable=False)
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        editable=False
-    )

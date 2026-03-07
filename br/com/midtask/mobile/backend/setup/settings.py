@@ -31,6 +31,7 @@ GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG")
 
+#Agendamento e acionamento dos alertas de tarefas
 CELERY_BEAT_SCHEDULE = {
     'execute_alerts_one_hour': {
         'task': 'Task.tasks.send_alerts',
@@ -39,19 +40,19 @@ CELERY_BEAT_SCHEDULE = {
 }
 
 ALLOWED_HOSTS = [
-    "midtask.onrender.com",
+    "https://api.midloriun.com",
     "127.0.0.1",
     "localhost"
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "https://midtask.onrender.com",
+    "https://api.midloriun.com",
     "http://localhost:5173", #Vue localhost
     "http://127.0.0.1:5173" #Vue localhost
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://midtask.onrender.com",
+    "https://api.midloriun.com",
     "http://localhost:5173",
     "http://127.0.0.1:5173",
     "http://192.168.0.15:5173",
@@ -82,7 +83,12 @@ LOCAL_APPS = [
     "LinksAssociates.apps.LinksassociatesConfig",
     "Notifications.apps.NotificationsConfig",
     "Checklists.apps.ChecklistsConfig",
-    "Status.apps.StatusConfig"
+    "Status.apps.StatusConfig",
+    "AuditLog.apps.AuditlogConfig",
+    "Scope.apps.ScopeConfig",
+    "TaskRoles.apps.TaskrolesConfig",
+    "TaskShare.apps.TaskshareConfig"
+    
 ]  # (Danilo) - Apps locais
 
 # Application definition
@@ -108,7 +114,8 @@ ROOT_URLCONF = "setup.urls"
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
+    "EXCEPTION_HANDLER": "setup.utils.errors.handler_errors.exception_errors" #Custom handler errors
 }
 
 

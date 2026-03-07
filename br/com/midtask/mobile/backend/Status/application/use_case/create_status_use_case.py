@@ -7,7 +7,7 @@ class CreateStatusUseCase:
         self.repository = StatusRepository()
 
     def execute(self, status: dict, user_id: str):
-        status_default = ["CONCLUDE", "PENDING", "CANCELED"]
+        status_default = ["CONCLUDE", "CANCELED"]
         exists_status_default = list(filter(lambda x: x.upper() in status_default, status.get("status", [])))
 
         if len(exists_status_default):
@@ -16,7 +16,6 @@ class CreateStatusUseCase:
             )
         
         status_exists_in_db = self.repository.findall([StatusEntity(name=n) for n in exists_status_default], user_id)
-        print(status_exists_in_db)
         if(len(status_exists_in_db) == 0): status["status"].extend(status_default)
 
         status_entities = [StatusEntity(name=s) for s in status.get("status", [])]
