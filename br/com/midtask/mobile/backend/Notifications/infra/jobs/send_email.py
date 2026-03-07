@@ -10,7 +10,6 @@ def send_emails(self, path, context: dict, recipient: str):
         path,
         context
     )
-
     email = EmailMultiAlternatives(
         subject=context.get("subject", ""),
         from_email=settings.DEFAULT_FROM_EMAIL,
@@ -18,4 +17,4 @@ def send_emails(self, path, context: dict, recipient: str):
     )
 
     email.attach_alternative(html_content, "text/html")
-    email.send()
+    email.send(fail_silently=False) #Retorna a excessao

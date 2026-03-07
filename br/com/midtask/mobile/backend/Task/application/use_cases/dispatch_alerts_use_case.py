@@ -1,5 +1,5 @@
 from ...infra.repository import TaskRepository
-from ...infra.messages import format_response
+from setup.utils.messages.format_response import format_response
 from Notifications.infra.jobs.send_email import send_emails
 
 class DispatchAlertsUseCase():
