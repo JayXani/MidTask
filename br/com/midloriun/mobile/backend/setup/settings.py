@@ -40,7 +40,7 @@ CELERY_BEAT_SCHEDULE = {
 }
 
 ALLOWED_HOSTS = [
-    "https://api.midloriun.com",
+    "api.midloriun.com",
     "127.0.0.1",
     "localhost"
 ]
